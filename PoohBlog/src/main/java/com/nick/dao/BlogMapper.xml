@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间为对应的dao/mapper接口-->
+<mapper namespace="com.nick.dao.BlogMapper">
+
+<!--    增加博文-->
+    <insert id="addBlog" parameterType="Blog">
+        insert into Blog (content,title,writer,writerId,typeId)
+        values(#{content},#{title},#{writer},#{writerId},#{typeId});
+    </insert>
+
+<!--    更新博文内容-->
+    <update id="updateBlog" parameterType="Blog">
+        update Blog set content=#{content},title=#{title} where id=#{id};
+    </update>
+
+<!--    删除博文，伪删除，isDeleted置为1-->
+    <update id="deleteBlog" parameterType="int">
+        update Blog set isDeleted = 1 where id =#{id};
+    </update>
+<!--    查询单篇博文-->
+    <select id="queryBlog" resultType="com.nick.pojo.Blog">
+        select * from Blog where id = #{id};
+    </select>
+
+<!--    查询所有博文-->
+    <select id="queryAllBlogs" resultType="com.nick.pojo.Blog">
+        select * from Blog;
+    </select>
+</mapper>
+
