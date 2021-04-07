@@ -19,4 +19,6 @@ public interface BlogMapper {
     //public void blogStarIncrement(Blog blog);
     //TODO: 评论数+1
     //public void blogCommentCountIncrement(Blog blog);
+    //查询博文是否已被删除,0为未删除，1为已删除
+    public int getBlogIsDeleted(int id);
 }

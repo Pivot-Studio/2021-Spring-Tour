@@ -24,7 +24,14 @@ public class BlogServiceImpl implements BlogService{
 
     @Override
     public int deleteBlog(int id) {
-        return blogMapper.deleteBlog(id);
+        //已经删除，无法再次删除，删除失败返回0
+        if(blogMapper.getBlogIsDeleted(id)==1) {
+            return 0;
+        }
+        else {
+            //返回操作删除后的操作
+            return blogMapper.deleteBlog(id);
+        }
     }
 
     @Override
@@ -41,4 +48,5 @@ public class BlogServiceImpl implements BlogService{
     public Blog queryBlog(int id) {
         return blogMapper.queryBlog(id);
     }
+
 }

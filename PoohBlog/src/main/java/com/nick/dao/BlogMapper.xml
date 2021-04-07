@@ -29,5 +29,8 @@
     <select id="queryAllBlogs" resultType="com.nick.pojo.Blog">
         select * from Blog;
     </select>
+    <select id="getBlogIsDeleted" resultType="java.lang.Integer">
+        select isDeleted from Blog where id=#{id};
+    </select>
 </mapper>
 
