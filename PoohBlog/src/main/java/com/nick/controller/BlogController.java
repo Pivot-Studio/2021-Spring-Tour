@@ -1,19 +1,16 @@
 package com.nick.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nick.pojo.Blog;
 import com.nick.service.BlogService;
 import com.nick.util.JudgmentToJson;
 import com.nick.util.ObjectToJson;
+import com.nick.utilObjects.AddBlogObject;
+import com.nick.utilObjects.UpdateBlogObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,6 +42,22 @@ public class BlogController {
     public String deleteBlog(@PathVariable int id) throws JsonProcessingException {
         //res为0表示删除失败，1为删除成功
         int res = blogService.deleteBlog(id);
+        return JudgmentToJson.judgmentToJson(res);
+    }
+
+    //TODO:测试更新功能
+    //前端传来的应该是一个只有id与content属性与title属性的json
+    @ResponseBody
+    @PostMapping(value = "/updateBlog",produces = "text/html;charset=UTF-8")
+    public String updateBlog(UpdateBlogObject updateBlogObject) throws JsonProcessingException {
+        int res = blogService.updateBlog(updateBlogObject);
+        return JudgmentToJson.judgmentToJson(res);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/addBlog",produces = "text/html;charset=UTF-8")
+    public String addBlog(AddBlogObject addBlogObject) throws JsonProcessingException {
+        int res=blogService.addBlog(addBlogObject);
         return JudgmentToJson.judgmentToJson(res);
     }
 }

@@ -11,7 +11,7 @@
         values(#{content},#{title},#{writer},#{writerId},#{typeId});
     </insert>
 
-<!--    更新博文内容-->
+<!--    更新博文内容 只能更新content与title-->
     <update id="updateBlog" parameterType="Blog">
         update Blog set content=#{content},title=#{title} where id=#{id};
     </update>

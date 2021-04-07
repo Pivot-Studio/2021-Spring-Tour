@@ -2,6 +2,9 @@ package com.nick.service;
 
 import com.nick.dao.BlogMapper;
 import com.nick.pojo.Blog;
+import com.nick.pojo.User;
+import com.nick.utilObjects.AddBlogObject;
+import com.nick.utilObjects.UpdateBlogObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +20,8 @@ import java.util.List;
 public class BlogServiceImpl implements BlogService{
     @Autowired
     private BlogMapper blogMapper;
+    @Autowired
+    private UserService userService;
     @Override
     public List<Blog> queryAllBlogs() {
         return blogMapper.queryAllBlogs();
@@ -35,13 +40,43 @@ public class BlogServiceImpl implements BlogService{
     }
 
     @Override
-    public int updateBlog(Blog blog) {
+    public int updateBlog(UpdateBlogObject updateBlogObject) {
+        Blog blog=queryBlog(updateBlogObject.getId());
+        if(blog==null)
+        {
+            return 0;
+        }
+        else
+        {
+            //为空或者相等时不改变
+            if(updateBlogObject.getTitle()!=""&&!updateBlogObject.getTitle().equals(blog.getTitle()))
+            {
+                blog.setTitle(updateBlogObject.getTitle());
+            }
+            if(updateBlogObject.getContent()!=""&&!updateBlogObject.getContent().equals(blog.getContent()))
+            {
+            blog.setContent(updateBlogObject.getContent());
+            }
+        }
         return blogMapper.updateBlog(blog);
     }
 
     @Override
-    public int addBlog(Blog blog) {
-        return blogMapper.addBlog(blog);
+    public int addBlog(AddBlogObject addBlogObject) {
+        Blog blog=new Blog();
+        User user=userService.queryUser(addBlogObject.getWriterId());
+        if(user==null)
+        {
+            return 0;
+        }
+        else {
+            blog.setWriter(user.getName());
+            blog.setContent(addBlogObject.getContent());
+            blog.setTitle(addBlogObject.getTitle());
+            blog.setWriterId(addBlogObject.getWriterId());
+            blog.setTypeId(addBlogObject.getTypeId());
+            return blogMapper.addBlog(blog);
+        }
     }
 
     @Override

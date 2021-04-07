@@ -12,6 +12,7 @@
     </typeAliases>
     <mappers>
         <mapper class="com.nick.dao.BlogMapper"/>
+        <mapper class="com.nick.dao.UserMapper"/>
     </mappers>
 </configuration>
 
