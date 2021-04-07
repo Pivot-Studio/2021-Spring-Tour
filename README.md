@@ -9,6 +9,8 @@ git clone https://github.com/Pivot-Studio/2021-Spring-Tour.git
 git add .
 # 将更改记录提交
 git commit -m "Tag:Your commit info"
+# 推送到远程分支
+git push
 # 查看分支情况
 git branch
 # 切换分支
