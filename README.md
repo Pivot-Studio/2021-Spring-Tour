@@ -1,11 +1,20 @@
 # 实习手册 2021-Spring-Tour
 Join Us And Explore
 ## git
-```
+```shell
+# clone下来一个远程仓库
 git clone https://github.com/Pivot-Studio/2021-Spring-Tour.git
 
+# 将更改记录加入缓存区
 git add .
+# 将更改记录提交
+git commit -m "Tag:Your commit info"
+# 查看分支情况
+git branch
+# 切换分支
+git checkout your-branch-name
 ```
+
 ## 任务
 
 我们为后端提供了三个实习任务（每个任务 的具体要求详见实习群中发的pdf)
