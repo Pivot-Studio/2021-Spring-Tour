@@ -1,6 +1,11 @@
 # 实习手册 2021-Spring-Tour
 Join Us And Explore
+## git
+```
+git clone https://github.com/Pivot-Studio/2021-Spring-Tour.git
 
+git add .
+```
 ## 任务
 
 我们为后端提供了三个实习任务（每个任务 的具体要求详见实习群中发的pdf)
