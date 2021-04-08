@@ -15,6 +15,8 @@ git push
 git branch
 # 切换分支
 git checkout your-branch-name
+# 版本忽略
+git rm --cached -r your-file-name
 ```
 
 ## 任务
