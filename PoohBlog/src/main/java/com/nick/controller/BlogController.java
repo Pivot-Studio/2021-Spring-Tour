@@ -30,6 +30,7 @@ public class BlogController {
 //        return "queryAllBlog";
 //    }
 
+    //done
     @ResponseBody
     @RequestMapping(value = "/queryAllBlogs",produces = "text/html;charset=UTF-8")
     public String queryAllBlogs() throws JsonProcessingException {
@@ -37,6 +38,8 @@ public class BlogController {
         return ObjectToJson.objectToJson(blogs);
     }
 
+
+    //done
     @ResponseBody
     @RequestMapping(value = "/deleteBlog/{id}",produces = "text/html;charset=UTF-8")
     public String deleteBlog(@PathVariable int id) throws JsonProcessingException {
@@ -45,18 +48,29 @@ public class BlogController {
         return JudgmentToJson.judgmentToJson(res);
     }
 
-    //TODO:测试更新功能
+    //done
+    @ResponseBody
+    @RequestMapping(value = "/queryBlogById/{id}",produces = "text/html;charset=UTF-8")
+    public String queryBlogById(@PathVariable int id) throws JsonProcessingException
+    {
+        Blog blog=blogService.queryBlog(id);
+        return ObjectToJson.objectToJson(blog);
+    }
+    //done
     //前端传来的应该是一个只有id与content属性与title属性的json
     @ResponseBody
     @PostMapping(value = "/updateBlog",produces = "text/html;charset=UTF-8")
-    public String updateBlog(UpdateBlogObject updateBlogObject) throws JsonProcessingException {
+    public String updateBlog(@RequestBody UpdateBlogObject updateBlogObject) throws JsonProcessingException {
         int res = blogService.updateBlog(updateBlogObject);
         return JudgmentToJson.judgmentToJson(res);
     }
 
+
+    //done
     @ResponseBody
     @PostMapping(value = "/addBlog",produces = "text/html;charset=UTF-8")
-    public String addBlog(AddBlogObject addBlogObject) throws JsonProcessingException {
+    public String addBlog(@RequestBody AddBlogObject addBlogObject) throws JsonProcessingException {
+        System.out.println(addBlogObject);
         int res=blogService.addBlog(addBlogObject);
         return JudgmentToJson.judgmentToJson(res);
     }

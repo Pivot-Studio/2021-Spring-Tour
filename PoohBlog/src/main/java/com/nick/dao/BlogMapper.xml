@@ -20,15 +20,18 @@
     <update id="deleteBlog" parameterType="int">
         update Blog set isDeleted = 1 where id =#{id};
     </update>
-<!--    查询单篇博文-->
+
+<!--    查询单篇博文若博文已被删除不返回-->
     <select id="queryBlog" resultType="com.nick.pojo.Blog">
-        select * from Blog where id = #{id};
+        select * from Blog where id = #{id} and isDeleted = 0;
     </select>
 
-<!--    查询所有博文-->
+<!--    查询所有博文若博文已被删除不返回-->
     <select id="queryAllBlogs" resultType="com.nick.pojo.Blog">
-        select * from Blog;
+        select * from Blog where isDeleted = 0;
     </select>
+
+
     <select id="getBlogIsDeleted" resultType="java.lang.Integer">
         select isDeleted from Blog where id=#{id};
     </select>

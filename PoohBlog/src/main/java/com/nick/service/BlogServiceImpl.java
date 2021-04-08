@@ -41,7 +41,12 @@ public class BlogServiceImpl implements BlogService{
 
     @Override
     public int updateBlog(UpdateBlogObject updateBlogObject) {
+        //博文id=0返回0
+        if (updateBlogObject.getId()==0) {
+            return 0;
+        }
         Blog blog=queryBlog(updateBlogObject.getId());
+        //若找不到博文返回0
         if(blog==null)
         {
             return 0;
@@ -49,12 +54,14 @@ public class BlogServiceImpl implements BlogService{
         else
         {
             //为空或者相等时不改变
-            if(updateBlogObject.getTitle()!=""&&!updateBlogObject.getTitle().equals(blog.getTitle()))
+            if(updateBlogObject.getTitle()!=null&&!updateBlogObject.getTitle().equals(blog.getTitle()))
             {
+                //重新设置title
                 blog.setTitle(updateBlogObject.getTitle());
             }
-            if(updateBlogObject.getContent()!=""&&!updateBlogObject.getContent().equals(blog.getContent()))
+            if(updateBlogObject.getContent()!=null&&!updateBlogObject.getContent().equals(blog.getContent()))
             {
+                //重新设置content
             blog.setContent(updateBlogObject.getContent());
             }
         }
@@ -63,8 +70,14 @@ public class BlogServiceImpl implements BlogService{
 
     @Override
     public int addBlog(AddBlogObject addBlogObject) {
+        //若有一项为空则返回0
+        if(addBlogObject.getContent()==null||addBlogObject.getTitle()==null||addBlogObject.getTypeId()==0||addBlogObject.getWriterId()==0)
+        {
+            return 0;
+        }
         Blog blog=new Blog();
         User user=userService.queryUser(addBlogObject.getWriterId());
+        //若查不到此user返回0
         if(user==null)
         {
             return 0;
@@ -78,7 +91,6 @@ public class BlogServiceImpl implements BlogService{
             return blogMapper.addBlog(blog);
         }
     }
-
     @Override
     public Blog queryBlog(int id) {
         return blogMapper.queryBlog(id);
