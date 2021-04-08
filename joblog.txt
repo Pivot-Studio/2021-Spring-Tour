@@ -1,3 +1,5 @@
 one more practice
 
 gitignore.
+
+git diff <file>查看修改内容
