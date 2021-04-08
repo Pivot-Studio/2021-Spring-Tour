@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间为对应的dao/mapper接口-->
+<!--增加回复-->
+<mapper namespace="com.nick.dao.ReplyCommentMapper">
+    <insert id="addReplyComment" parameterType="com.nick.pojo.ReplyComment">
+        insert into replyComment (commentId,fromId,content,toId)
+        values(#{commentId},#{fromId},#{content},#{toId});
+    </insert>
+
+    <!--    分页查找-->
+    <select id="queryReplyCommentByPagingDesc" resultType="com.nick.pojo.ReplyComment">
+        select * from replyComment where commentId =#{id}
+        order by releaseDateTime desc
+        limit #{beginIndex},#{stepSize};
+    </select>
+</mapper>
+

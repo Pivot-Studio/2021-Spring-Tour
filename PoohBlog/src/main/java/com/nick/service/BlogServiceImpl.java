@@ -27,6 +27,7 @@ public class BlogServiceImpl implements BlogService{
         return blogMapper.queryAllBlogs();
     }
 
+    //done
     @Override
     public int deleteBlog(int id) {
         //已经删除，无法再次删除，删除失败返回0
@@ -38,11 +39,11 @@ public class BlogServiceImpl implements BlogService{
             return blogMapper.deleteBlog(id);
         }
     }
-
+    //done
     @Override
     public int updateBlog(UpdateBlogObject updateBlogObject) {
-        //博文id=0返回0
-        if (updateBlogObject.getId()==0) {
+        //博文id<=0返回0
+        if (updateBlogObject.getId()<=0) {
             return 0;
         }
         Blog blog=queryBlog(updateBlogObject.getId());
@@ -68,10 +69,11 @@ public class BlogServiceImpl implements BlogService{
         return blogMapper.updateBlog(blog);
     }
 
+    //done
     @Override
     public int addBlog(AddBlogObject addBlogObject) {
         //若有一项为空则返回0
-        if(addBlogObject.getContent()==null||addBlogObject.getTitle()==null||addBlogObject.getTypeId()==0||addBlogObject.getWriterId()==0)
+        if(addBlogObject.getContent()==null||addBlogObject.getTitle()==null||addBlogObject.getTypeId()<=0||addBlogObject.getWriterId()<=0)
         {
             return 0;
         }
@@ -91,6 +93,7 @@ public class BlogServiceImpl implements BlogService{
             return blogMapper.addBlog(blog);
         }
     }
+    //done
     @Override
     public Blog queryBlog(int id) {
         return blogMapper.queryBlog(id);

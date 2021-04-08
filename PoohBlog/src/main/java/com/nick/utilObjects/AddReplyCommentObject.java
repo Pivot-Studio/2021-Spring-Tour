@@ -1,20 +1,15 @@
-package com.nick.pojo;
+package com.nick.utilObjects;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReplyComment {
-    private int id;
+public class AddReplyCommentObject {
     private int commentId;
-    private String content;
     private int fromId;
+    private String content;
     private int toId;
-    private Timestamp releaseDateTime;
-    private int likeCount;
 }

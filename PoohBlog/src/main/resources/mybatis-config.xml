@@ -13,6 +13,8 @@
     <mappers>
         <mapper class="com.nick.dao.BlogMapper"/>
         <mapper class="com.nick.dao.UserMapper"/>
+        <mapper class="com.nick.dao.CommentMapper"/>
+        <mapper class="com.nick.dao.ReplyCommentMapper"/>
     </mappers>
 </configuration>
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间为对应的dao/mapper接口-->
+<mapper namespace="com.nick.dao.CommentMapper">
+<!--    插入评论-->
+    <insert id="addComment">
+        insert into comment (topicId,content,fromId)
+        values(#{topicId},#{content},#{fromId});
+    </insert>
+<!--    分页查询评论，按时间降序-->
+    <select id="queryCommentByPagingDesc" resultType="com.nick.pojo.Comment">
+        select * from comment where topicId = #{param3}
+        order by releaseDateTime desc
+        limit #{param1},#{param2};
+    </select>
+    <select id="queryComment" resultType="com.nick.pojo.Comment">
+        select * from comment where id =#{id};
+    </select>
+</mapper>
+
