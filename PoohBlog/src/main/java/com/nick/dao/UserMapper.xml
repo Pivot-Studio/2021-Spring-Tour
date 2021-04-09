@@ -8,9 +8,21 @@
         insert into user (name,mail,passWord,account)
         values(#{name},#{mail},#{passWord},#{account});
     </insert>
+    <update id="updateUserPassWord">
+        update user set passWord=#{passWord} where account=#{account};
+    </update>
 
     <select id="queryUser" resultType="com.nick.pojo.User">
         select * from user where id=#{id};
+    </select>
+    <select id="queryUserByAccountAndPassWord" resultType="com.nick.pojo.User" parameterType="com.nick.utilObjects.LogInUserObject">
+        select * from user where account=#{account} and passWord=#{passWord};
+    </select>
+    <select id="queryUserByAccount" resultType="com.nick.pojo.User">
+        select * from user where account=#{account};
+    </select>
+    <select id="queryUserByMail" resultType="com.nick.pojo.User">
+        select * from user where mail=#{mail};
     </select>
 </mapper>
 

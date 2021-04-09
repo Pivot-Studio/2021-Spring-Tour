@@ -15,7 +15,6 @@ import java.util.HashMap;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Controller
 @RequestMapping("emailVerificationController")
 public class EmailVerificationController {
     @Autowired

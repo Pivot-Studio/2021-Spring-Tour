@@ -4,7 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nick.pojo.User;
 import com.nick.service.UserService;
 import com.nick.util.JudgmentToJson;
+import com.nick.util.ObjectToJson;
 import com.nick.utilObjects.AddUserObject;
+import com.nick.utilObjects.LogInUserObject;
+import com.nick.utilObjects.ModifyPassWordObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +28,8 @@ public class UserController {
     @Qualifier("userServiceImpl")
     private UserService userService;
 
+
+    //done
     @ResponseBody
     @PostMapping(value = "/signIn",produces = "text/html;charset=UTF-8")
     public String signIn(@RequestBody AddUserObject addUserObject) throws Exception {
@@ -32,12 +37,37 @@ public class UserController {
         int res=userService.signIn(addUserObject);
         return JudgmentToJson.judgmentToJson(res);
     }
-
+    //done
     @ResponseBody
     @GetMapping(value = "/verification/{mail}/{uid}",produces = "text/html;charset=UTF-8")
     public String emailVerification(@PathVariable String mail,@PathVariable String uid) throws JsonProcessingException {
-
         int res=userService.emailVerification(mail,uid);
         return JudgmentToJson.judgmentToJson(res);
     }
+    //done
+    @ResponseBody
+    @PostMapping(value = "/logIn",produces = "text/html;charset=UTF-8")
+    public String LogIn(@RequestBody LogInUserObject logInUserObject) throws JsonProcessingException {
+        System.out.println(logInUserObject);
+        User user = userService.logIn(logInUserObject);
+        if(user==null)
+        {
+            return JudgmentToJson.judgmentToJson(0);
+        }
+        return ObjectToJson.objectToJson(user);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/modifyPassWord",produces = "text/html;charset=UTF-8")
+    public String modifyPassWord(@RequestBody ModifyPassWordObject modifyPassWordObject) throws Exception {
+        int res=userService.modifyPassWord(modifyPassWordObject);
+        return JudgmentToJson.judgmentToJson(res);
+    }
+    @ResponseBody
+    @GetMapping(value = "/verification/modifyPassWord/{mail}/{uid}",produces = "text/html;charset=UTF-8")
+    public String emailVerificationModifyPassWord(@PathVariable String mail,@PathVariable String uid) throws JsonProcessingException {
+        int res=userService.emailVerificationModifyPassWord(mail,uid);
+        return JudgmentToJson.judgmentToJson(res);
+    }
+
 }
