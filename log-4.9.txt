@@ -1,0 +1,17 @@
+知识：
+1.阅读了github官方api文档，了解restful api的概念
+2.下载安装了postman，练习使用postman对github发起http请求，成功获取到了自己github账号的repository信息
+3.了解token，并且在自己的github主页里获取到了自己账户的token
+4.了解stmp服务，并且为自己的QQ邮箱开启stmp服务
+
+问题：
+使用IDEA的时候，代码成功运行了，项目还是爆红
+解决方法：
+项目爆红是因为该项目处在Git仓库中，新编写的代码没有提交到远程仓库。将代码提交至远程仓库之后项目不再爆红
+问题:
+初次运行邮件大师代码时，IDEA报错NoClassDefFoundError: javax.activation.DataHandler
+解决方法：
+只导入了javax.mail的jar包而没有导入activation的jar包，将activation的jar包导入即可
+
+实现功能：
+成功利用QQ邮箱的stmp服务向自己的QQ邮箱发送邮件，项目里用到了activation和javax.mail的jar包，放在了.lib文件夹下
