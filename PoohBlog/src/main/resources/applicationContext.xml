@@ -16,4 +16,7 @@
     <import resource="spring-dao.xml"/>
     <import resource="spring-mvc.xml"/>
 
+
+    <bean id="UIDMaiVerification" class="java.util.HashMap"/>
+    <bean id="UserMap" class="java.util.HashMap"/>
 </beans>

@@ -4,6 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--命名空间为对应的dao/mapper接口-->
 <mapper namespace="com.nick.dao.UserMapper">
+    <insert id="addUser">
+        insert into user (name,mail,passWord,account)
+        values(#{name},#{mail},#{passWord},#{account});
+    </insert>
 
     <select id="queryUser" resultType="com.nick.pojo.User">
         select * from user where id=#{id};
