@@ -1,12 +1,12 @@
-#Log of ZhangChiAng#
+# Log of ZhangChiAng
 
-##2021.04.09##
+## 2021.04.09
 
-###Developing Log###
+### Developing Log
 1. 选择任务：实现一个博客后端
 2. 建立一些文件夹
 
-###Studying Log###
+### Studying Log
 1. Markdown的学习
 2. Github的熟悉
 	```
