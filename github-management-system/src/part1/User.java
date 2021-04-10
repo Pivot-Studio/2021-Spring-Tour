@@ -1,4 +1,4 @@
-package part1.util;
+package part1;
 
 public class User {
     private String name;
