@@ -1,5 +1,6 @@
 import com.nick.util.IsEmail;
 import com.nick.util.SendEmail;
+import com.nick.util.jwtUtil.Constant;
 import com.nick.util.jwtUtil.JwtUtils;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Encoders;
@@ -27,8 +28,8 @@ public class UtilTest {
     @Test
     public void testJJWT()
     {
-        for (int i = 0; i < 10; i++) {
-            System.out.println(Encoders.BASE64.encode(JwtUtils.getKey().getEncoded()));
-        }
+        String a="{\"id\":4,\"name\":\"嘉然小姐\",\"mail\":\"2975684744@qq.com\",\"passWord\":null,\"starCount\":0,\"account\":\"12345678\"}";
+        String b=JwtUtils.createJWT(a, Constant.JWT_TTL);
+        System.out.println(b);
     }
 }

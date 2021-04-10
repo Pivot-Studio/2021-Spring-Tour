@@ -14,17 +14,13 @@ public class JwtUtils {
         return Constant.JWT_SECRET;
     }
 
-    public static String createJWT(String subject,long ttlMillis)throws Exception
+    public static String createJWT(String subject,long ttlMillis)
     {
-        SignatureAlgorithm signatureAlgorithm=SignatureAlgorithm.HS256;
         //生成jwt的时间
         long nowMillis=System.currentTimeMillis();
         Date now=new Date(nowMillis);
-        //创建payload的私有声明
-        System.out.println("----------");
         //生成签名密钥
         SecretKey key=getKey();
-
         JwtBuilder builder=Jwts.builder()
                 .setIssuedAt(now)
                 .setSubject(subject)//JWT主体可以作为用户的唯一标志
@@ -40,7 +36,7 @@ public class JwtUtils {
     }
 
     //解密jwt
-    public static Claims parseJWT(String jws)throws Exception
+    public static Claims parseJWT(String jws)
     {
         try{
             Claims claims=Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jws).getBody();
@@ -53,7 +49,7 @@ public class JwtUtils {
         }
     }
 
-    public static boolean isExpired(Claims claims)
+    public static boolean isNotExpired(Claims claims)
     {
         Date dateNow=new Date(System.currentTimeMillis());
         Date dateExpire=claims.getExpiration();

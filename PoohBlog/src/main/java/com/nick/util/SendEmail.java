@@ -27,7 +27,7 @@ public class SendEmail {
         Session session=Session.getDefaultInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("2975684744@qq.com","*************");
+                return new PasswordAuthentication("2975684744@qq.com","hruhtiztgxtndche");
             }
         });
         session.setDebug(true);
@@ -36,7 +36,7 @@ public class SendEmail {
         //2.通过session得到transport对象
         Transport ts=session.getTransport();
         //3.连接服务器
-        ts.connect("smtp.qq.com","2975684744@qq.com","************");
+        ts.connect("smtp.qq.com","2975684744@qq.com","hruhtiztgxtndche");
         //4.创建邮件
         //创建邮件对象
         MimeMessage message=new MimeMessage(session);

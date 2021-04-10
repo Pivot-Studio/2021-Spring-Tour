@@ -5,13 +5,16 @@ import com.nick.pojo.Blog;
 import com.nick.service.BlogService;
 import com.nick.util.JudgmentToJson;
 import com.nick.util.ObjectToJson;
+import com.nick.util.jwtUtil.JwtUtils;
 import com.nick.utilObjects.AddBlogObject;
 import com.nick.utilObjects.UpdateBlogObject;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -64,12 +67,10 @@ public class BlogController {
         int res = blogService.updateBlog(updateBlogObject);
         return JudgmentToJson.judgmentToJson(res);
     }
-
-
     //done
     @ResponseBody
     @PostMapping(value = "/addBlog",produces = "text/html;charset=UTF-8")
-    public String addBlog(@RequestBody AddBlogObject addBlogObject) throws JsonProcessingException {
+    public String addBlog(@RequestBody AddBlogObject addBlogObject, HttpServletRequest request) throws JsonProcessingException {
         System.out.println(addBlogObject);
         int res=blogService.addBlog(addBlogObject);
         return JudgmentToJson.judgmentToJson(res);

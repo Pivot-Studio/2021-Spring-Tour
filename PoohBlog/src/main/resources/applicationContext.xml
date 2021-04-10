@@ -20,4 +20,19 @@
     <bean id="UIDMaiVerification" class="java.util.concurrent.ConcurrentHashMap"/>
     <bean id="UserMap" class="java.util.concurrent.ConcurrentHashMap"/>
     <bean id="UserModifyInfo" class="java.util.concurrent.ConcurrentHashMap"/>
+
+<!--    拦截器配置-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/blog/*"/>
+            <mvc:mapping path="/comment/*"/>
+            <mvc:mapping path="/replyComment/*"/>
+            <mvc:mapping path="/user/modifyPassWord"/>
+            <mvc:exclude-mapping path="/blog/queryAllBlogs"/>
+            <mvc:exclude-mapping path="/blog/queryBlogById/*"/>
+            <mvc:exclude-mapping path="/comment/queryCommentByPagingDesc/**"/>
+            <mvc:exclude-mapping path="/replyComment/queryReplyCommentByPagingDesc/**"/>
+            <bean class="com.nick.config.JwtInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>
