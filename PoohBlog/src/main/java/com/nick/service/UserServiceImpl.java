@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -30,15 +31,15 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     @Qualifier("UserMap")
-    HashMap<String , AddUserObject> UserMap;//key为邮箱，value为待验证用户信息
+    Map<String , AddUserObject> UserMap;//key为邮箱，value为待验证用户信息
 
     @Autowired
     @Qualifier("UIDMaiVerification")//key为邮箱，value为验证码
-    HashMap<String ,String> UIDMaiVerification;
+    Map<String ,String> UIDMaiVerification;
 
     @Autowired
     @Qualifier("UserModifyInfo")
-    HashMap<String,ModifyPassWordObject> UserModifyInfo;
+    Map<String,ModifyPassWordObject> UserModifyInfo;
 
 
     //done

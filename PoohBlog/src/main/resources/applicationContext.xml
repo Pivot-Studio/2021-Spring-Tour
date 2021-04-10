@@ -17,7 +17,7 @@
     <import resource="spring-mvc.xml"/>
 
 
-    <bean id="UIDMaiVerification" class="java.util.HashMap"/>
-    <bean id="UserMap" class="java.util.HashMap"/>
-    <bean id="UserModifyInfo" class="java.util.HashMap"/>
+    <bean id="UIDMaiVerification" class="java.util.concurrent.ConcurrentHashMap"/>
+    <bean id="UserMap" class="java.util.concurrent.ConcurrentHashMap"/>
+    <bean id="UserModifyInfo" class="java.util.concurrent.ConcurrentHashMap"/>
 </beans>
