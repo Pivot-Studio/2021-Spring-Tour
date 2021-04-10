@@ -1,0 +1,20 @@
+知识：
+1、深入了解了restful
+REST（Representational State Transfer）表述性状态转换，REST指的是一组架构约束条件和原则。 如果一个架构符合REST的约束条件和原则，我们就称它为RESTful架构。REST本身并没有创造新的技术、组件或服务，而隐藏在RESTful背后的理念就是使用Web的现有特征和能力， 更好地使用现有Web标准中的一些准则和约束。虽然REST本身受Web技术的影响很深， 但是理论上REST架构风格并不是绑定在HTTP上，只不过目前HTTP是唯一与REST相关的实例。
+URL只指定资源，以HTTP方法动词进行不同的操作。用HTTP STATUS/CODE定义操作结果
+为什么需要Restful？
+URL具有很强可读性的，具有自描述性
+规范化请求过程和返回结果
+资源描述与视图的松耦合
+可提供OpenAPI，便于第三方系统集成，提高互操作性
+提供无状态的服务接口，降低复杂度，可提高应用的水平扩展性
+
+2、学会从配置文件里读取json数据并且转换为json对象
+
+3、学会使用FileInputStream中的readAllBytes()函数
+
+实现功能：
+成功从json配置文件中读取了github账户密码，转换成了json对象，完成了part1
+
+遇到的问题：
+github restful api文档纯英文，读起来非常吃力
