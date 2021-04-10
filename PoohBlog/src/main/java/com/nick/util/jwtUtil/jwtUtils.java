@@ -1,57 +1,34 @@
 package com.nick.util.jwtUtil;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nick.pojo.User;
 import com.nick.util.ObjectToJson;
-import com.sun.mail.util.BASE64DecoderStream;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.crypto.Data;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class jwtUtils {
-    public static SecretKey generalKey()
+public class JwtUtils {
+    //done,每次获得的都是同一个key
+    public static SecretKey getKey()
     {
-        String stringKey=Constant.JWT_SECRET;
-        //本地密码解码
-        byte[] encodeKey= stringKey.getBytes(StandardCharsets.UTF_8);
-        //根据给定的字节数组使用AES加密算法构造密钥
-        System.out.println("================");
-        SecretKey key=new SecretKeySpec(encodeKey,0,encodeKey.length,"AES");
-        return key;
+        return Constant.JWT_SECRET;
     }
 
-    public static String createJWT(String id,String issuer,String subject,long ttlMillis)throws Exception
+    public static String createJWT(String subject,long ttlMillis)throws Exception
     {
         SignatureAlgorithm signatureAlgorithm=SignatureAlgorithm.HS256;
         //生成jwt的时间
         long nowMillis=System.currentTimeMillis();
         Date now=new Date(nowMillis);
         //创建payload的私有声明
-        Map<String,Object> claims=new HashMap<>();
-        claims.put("uid","123456");
-        claims.put("user_name","nick");
-
         System.out.println("----------");
         //生成签名密钥
-        SecretKey key=generalKey();
+        SecretKey key=getKey();
 
-        JwtBuilder builder=Jwts.builder().setClaims(claims)
-                .setId(id)
+        JwtBuilder builder=Jwts.builder()
                 .setIssuedAt(now)
-                .setIssuer(issuer)//签发人
                 .setSubject(subject)//JWT主体可以作为用户的唯一标志
-                .signWith(signatureAlgorithm,key);//签名
-
+                .signWith(key);//签名
         //设置过期时间
         if(ttlMillis>=0)
         {
@@ -63,11 +40,31 @@ public class jwtUtils {
     }
 
     //解密jwt
-    public static Claims parseJWT(String jwt)throws Exception
+    public static Claims parseJWT(String jws)throws Exception
     {
-        SecretKey key=generalKey();
-        Claims claims=Jwts.parser().setSigningKey(key).parseClaimsJws(jwt).getBody();
-        return claims;
+        try{
+            Claims claims=Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jws).getBody();
+            return claims;
+        }
+        catch (JwtException e)
+        {
+            System.out.println("token错误");
+            return null;
+        }
+    }
+
+    public static boolean isExpired(Claims claims)
+    {
+        Date dateNow=new Date(System.currentTimeMillis());
+        Date dateExpire=claims.getExpiration();
+        if(dateNow.after(dateExpire))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
     public static void main(String[] args) throws Exception {
         User user=new User();
@@ -76,17 +73,18 @@ public class jwtUtils {
         user.setAccount("123456");
         user.setPassWord("123456");
         String subject=ObjectToJson.objectToJson(user);
-
         try{
-            String jwt = jwtUtils.createJWT(Constant.JWT_ID, "nick", subject, Constant.JWT_TTL);
+            String jwt = JwtUtils.createJWT( subject, Constant.JWT_TTL);
             System.out.println(jwt);
 
-            Claims c = jwtUtils.parseJWT(jwt);
-
+            Claims c = JwtUtils.parseJWT(jwt);
+            if(c==null)
+            {
+                System.out.println("token错误");
+                System.exit(0);
+            }
+            System.out.println(c);
             System.out.println(c.getExpiration());
-            System.out.println(c.getId());
-            System.out.println(c.getIssuedAt());
-            System.out.println(c.getSubject());
         }catch (Exception e)
         {
             e.printStackTrace();
