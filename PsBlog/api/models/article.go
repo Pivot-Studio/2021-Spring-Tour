@@ -12,7 +12,7 @@ type Article struct {
 	TagId int `json:"tag_id" gorm:"index"`
 	Title string `json:"title"`
 	Content string `json:"content"`
-	DateTime time.Time `json:"time"`
+	DateTime time.Time `json:"date_time"`
 }
 
 //添加文章
@@ -21,7 +21,7 @@ func (article Article)AddArticle(a map[string]interface{})  (err error)  {
 		TagId: a["tag_id"].(int),
 		Title: a["title"].(string),
 		Content: a["content"].(string),
-		DateTime: a["time"].(time.Time),
+		DateTime: a["date_time"].(time.Time),
 	})
 	if res.Error!=nil{
 		err = res.Error
@@ -30,9 +30,9 @@ func (article Article)AddArticle(a map[string]interface{})  (err error)  {
 	return
 }
 //通过id查找
-func (article Article)GetArticleByID(id int) bool{
-	orm.Db.Select("id").Where("id = ?", id).First(&article)
-	if article.ID < 0{
+func (article *Article)GetArticleByID(id int) bool{
+	err := orm.Db.Where("id = ?", id).First(&article).Error
+	if err != nil{
 		return false
 	}
 	return true
@@ -46,7 +46,7 @@ func (article Article)UpdateArticle(id int, data interface {}) bool {
 }
 
 //列表
-func (article *Article)GetAllArticles()(articles []Article, err error){
+func GetAllArticles()(articles []Article, err error){
 	if err = orm.Db.Find(&articles).Error;err!=nil{
 		return
 	}
@@ -55,7 +55,7 @@ func (article *Article)GetAllArticles()(articles []Article, err error){
 
 //删除文章
 func(article Article)DeleteArticle(id int) bool {
-	err := orm.Db.Where("id=?", id).Delete(Article{})
+	err := orm.Db.Where("id=?", id).Delete(Article{}).Error
 	if err != nil{
 		return false
 	}

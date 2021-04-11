@@ -12,12 +12,39 @@ import (
 
 //获得多个文章
 func GetArticles(c *gin.Context){
-
+	data, err := model.GetAllArticles()
+	if err != nil{
+		c.JSON(http.StatusOK, gin.H{
+			"code" : -1,
+			"msg" : "列表失败",
+		})
+	}else{
+		c.JSON(http.StatusOK, gin.H{
+			"code" : 1,
+			"msg" : "查找成功",
+			"data" : data,
+		})
+	}
 }
 
 //获取指定文章
 func GetArticle(c *gin.Context)  {
-
+	//通过id查询
+	id := com.StrTo(c.Param("id")).MustInt()
+	var article model.Article
+	flag := article.GetArticleByID(int(id))
+	if flag == true{
+		c.JSON(http.StatusOK, gin.H{
+			"code" : 1,
+			"msg" : "查找成功",
+			"data" : article,
+		})
+	}else{
+		c.JSON(http.StatusOK, gin.H{
+			"code" : -1,
+			"msg" : "查找失败",
+		})
+	}
 }
 
 //添加文章
@@ -36,7 +63,7 @@ func AddArticle(c *gin.Context) {
 		data["tag_id"] = tagId
 		data["title"] = title
 		data["content"] = content
-		data["time"] = time.Now() //当前时间
+		data["date_time"] = time.Now() //当前时间
 		var article model.Article
 		//添加文章
 		_ = article.AddArticle(data)
@@ -66,22 +93,22 @@ func UpdateArticle(c *gin.Context) {
 	title := c.Query("title")
 	content := c.Query("content")
 
-	valid.Min(tagId, 1, "tag_id").Message("标签ID必须大于0")
+	valid.Min(tagId, 1, "tag_id").Message("标签id必须大于0")
 	valid.Required(title, "title").Message("标题不能为空")
-
+	//内容可以为空
 	data := make(map[string]interface{})
 	if !valid.HasErrors() {
 
 		data["tag_id"] = tagId
 		data["title"] = title
 		data["content"] = content
-		data["time"] = time.Now() //当前时间
+		data["date_time"] = time.Now() //当前时间
 		var article model.Article
 		//添加文章
 		article.UpdateArticle(id, data)
 		c.JSON(http.StatusOK, gin.H{
 			"code":    1,
-			"message": "添加成功",
+			"message": "更新成功",
 			"data":    data,
 		})
 	} else {
@@ -91,7 +118,7 @@ func UpdateArticle(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, gin.H{
 			"code":    -1,
-			"message": "添加失败",
+			"message": "更新失败",
 		})
 	}
 }
@@ -101,7 +128,7 @@ func DeleteArticle(c *gin.Context)  {
 	id := com.StrTo(c.Param("id")).MustInt()
 	var article model.Article
 	flag := article.DeleteArticle(int(id))
-	if flag{
+	if flag == true{
 		c.JSON(http.StatusOK, gin.H{
 			"code" : 1,
 			"msg" : "删除成功",

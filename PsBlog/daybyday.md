@@ -23,11 +23,11 @@
   
   创建"文章类型"表单，分模块创建文件夹，写了初步代码。
   ```
-  mysql> CREATE TABLE `article`(`id` int(10) unsigned NOT NULL auto_increment,
+  mysql> CREATE TABLE `articles`(`id` int(10) unsigned NOT NULL auto_increment,
     -> `tag_id` int(8) unsigned DEFAULT '10' comment '标签ID',
     -> `title` varchar(100) DEFAULT '' COMMENT '文章标题',
     -> `content` text,
-    -> `time` datetime,
+    -> `date_time` datetime,
     -> primary key(`id`)
     -> )ENGINE=MYISAM AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
   ```
@@ -38,6 +38,20 @@
   
   开始搭建，似乎还没有问题
   ![img.png](img.png)
-  初步构建增删改查操作，但是似乎还有些问题，对于mysql事件类型有bug...
+  初步构建增删改查操作，bug冒出来了，对于mysql事件类型有bug...
   学会使用google插件postman，确实很强大，来进行post等操作
   ![img_1.png](img_1.png)
+  
+- **4.11**
+
+  添加文章没有问题了，但是对这个报错很疑惑，我没有定义date_time这一列啊，不知道为什么
+  create的时候，它会这么匹配，猜想可能是dateTime类型的转化问题？？？
+  ![img_2.png](img_2.png)
+  增删改查基本完成，返回值形式应该是json，然后查询如何将信息写入配置文件中并由其它模块调用
+  增加配置文件config.yaml，链接数据库通过加载load()函数处理配置文件信息
+  part1应该差不多了吧。。。
+  查阅关于数据库表设计的相关资料
+  
+  属性的 **关联**/**约束**
+  好像有点难以下手了，是需要搭个简单的前端吗？但不太会鸭
+  准备学习下中间件鉴权
