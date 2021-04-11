@@ -1,0 +1,9 @@
+知识：
+1.进一步了解了restful api的概念和http协议
+2.了解到可以用java原生的java.net包或者是阿帕奇公司的httpclient包来在java中发送请求
+3.用postman获取到了自己仓库的star列表。
+4.了解到用stringboot可以做出更复杂的github管理系统。
+问题：
+目前还不知道该怎么实现j用ava语言来向github.com发送网络请求
+解决方法：
+通过在b站看视频的方式来学习httpclient，打算用httpclient来实现。
