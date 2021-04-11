@@ -4,6 +4,6 @@
 3.用postman获取到了自己仓库的star列表。
 4.了解到用stringboot可以做出更复杂的github管理系统。
 问题：
-目前还不知道该怎么实现j用ava语言来向github.com发送网络请求
+目前还不知道该怎么实现用ava语言来向github.com发送网络请求
 解决方法：
 通过在b站看视频的方式来学习httpclient，打算用httpclient来实现。
