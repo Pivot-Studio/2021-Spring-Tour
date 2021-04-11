@@ -57,11 +57,8 @@ func Post(url string, data interface{}, contentType string) string {
 }
 
 func main() {
-	fmt.Println(Post("https://api.github.com/users/Destined777",formDatas,
-					{
-						headers{"Content-Type": "multipart/form-data","Authorization":token
-							}
-					}
-				)
+	fmt.Println(Post("https://api.github.com/users/Destined777",{
+		headers{"Content-Type": "multipart/form-data","Authorization":token}
+	},formDatas)
 			)
 }
