@@ -66,7 +66,7 @@
 	* 两种配置方式：xml配置与annotation(注解）配置
 	* 注解配置：多一个aop.jar包；主配置文件多一个context命名空间约束
 	* 常用注解：四层注解（@Controller,@Service,@Repository,@Component）；扫描注解（主配置文件/配置类@Configuration、@ComponentScan）；用于依赖注入的注解（@Autowired、@Qualifier）
-	* controller、service层：面向引用、set输入对象、调用服务方方法
+	* controller、service层：面向引用、set注入对象、调用服务方方法
 	* 测试类：方法前注解@Test；方法中三步走（获取applicationContext对象并调用getBean方法获取对象、调用相关方法）
 2. 找到了更多有用的资料：关于ssm框架、Maven、MyBatis、SpringBoot
 3. 学习Maven
@@ -84,3 +84,16 @@
 2. 问题：还未能深刻地体会到IOC和DI的优点；
 3. 问题：在学习spring的纯注解开发方式时不知道classpath的含义，查找资料发现别人的项目结构与自己不同；	解决：学习了Maven的相关知识知道了实际开发时的项目结构，明天可以继续研究classpath的含义
 
+
+## 2021.04.11
+
+### 开发日志
+1. 初步编写了Blog类和User类的各层
+2. 用RESTful风格编写了BlogController对get请求的响应
+
+### 学习日志
+1. 学习SpringMVC：Controller接收请求和数据以及响应，关键注解@RestController,@RequestMapping,@PathVarible
+2. 学习RESTful api：注解@GetMapping等，ResponseEntity<>	返回Json
+
+### 问题及解决
+1. 不会进行接口测试，postman和rest client暂时没学会
