@@ -30,6 +30,7 @@ func GetArticles(c *gin.Context){
 //获取指定文章
 func GetArticle(c *gin.Context)  {
 	//通过id查询
+	//com包进行类型转换
 	id := com.StrTo(c.Param("id")).MustInt()
 	var article model.Article
 	flag := article.GetArticleByID(int(id))

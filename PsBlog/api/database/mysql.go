@@ -44,4 +44,6 @@ func init(){
 	if Db.Error != nil{
 		fmt.Printf("database error: %v\n", Db.Error)
 	}
+	//禁用默认表名复数形式
+	Db.SingularTable(true)
 }
