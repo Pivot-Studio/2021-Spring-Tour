@@ -1,6 +1,8 @@
 package com.nick.dao;
 
 import com.nick.pojo.Blog;
+import com.nick.pojo.Comment;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,4 +23,6 @@ public interface BlogMapper {
     //public void blogCommentCountIncrement(Blog blog);
     //查询博文是否已被删除,0为未删除，1为已删除
     public int getBlogIsDeleted(int id);
+    //分页查询博客
+    public List<Blog> queryBlogByPagingDesc(@Param("beginIndex") int beginIndex,@Param("stepSize") int stepSize);
 }

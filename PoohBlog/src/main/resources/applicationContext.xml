@@ -20,7 +20,10 @@
     <bean id="UIDMaiVerification" class="java.util.concurrent.ConcurrentHashMap"/>
     <bean id="UserMap" class="java.util.concurrent.ConcurrentHashMap"/>
     <bean id="UserModifyInfo" class="java.util.concurrent.ConcurrentHashMap"/>
-
+    <bean id="Jedis" class="redis.clients.jedis.Jedis">
+        <constructor-arg name="host" value="127.0.0.1"/>
+        <constructor-arg name="port" value="6379"/>
+    </bean>
 <!--    拦截器配置-->
     <mvc:interceptors>
         <mvc:interceptor>

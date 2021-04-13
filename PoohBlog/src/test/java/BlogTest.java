@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nick.pojo.Blog;
 import com.nick.service.BlogService;
 import com.nick.service.BlogServiceImpl;
@@ -23,7 +24,7 @@ public class BlogTest {
         }
     }
     @Test
-    public void testDeleteBlog()
+    public void testDeleteBlog() throws Exception
     {
         ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
         BlogService blogServiceImpl = (BlogServiceImpl)context.getBean("blogServiceImpl");
@@ -34,8 +35,7 @@ public class BlogTest {
     }
 
     @Test
-    public void testUpdateBlog()
-    {
+    public void testUpdateBlog() throws Exception {
         ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
         BlogService blogServiceImpl = (BlogServiceImpl)context.getBean("blogServiceImpl");
         UpdateBlogObject updateBlogObject =new UpdateBlogObject(4,"","罗素的话");
@@ -44,8 +44,7 @@ public class BlogTest {
     }
 
     @Test
-    public void testAddBlog()
-    {
+    public void testAddBlog() throws JsonProcessingException {
         ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("applicationContext.xml");
         BlogService blogServiceImpl = (BlogServiceImpl)context.getBean("blogServiceImpl");
         AddBlogObject addBlogObject=new AddBlogObject();

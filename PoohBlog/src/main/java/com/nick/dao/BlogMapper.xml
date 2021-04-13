@@ -35,5 +35,10 @@
     <select id="getBlogIsDeleted" resultType="java.lang.Integer">
         select isDeleted from Blog where id=#{id};
     </select>
+    <select id="queryBlogByPagingDesc" resultType="com.nick.pojo.Blog">
+        select * from Blog
+        order by releaseDateTime desc
+        limit #{beginIndex},#{stepSize};
+    </select>
 </mapper>
 
