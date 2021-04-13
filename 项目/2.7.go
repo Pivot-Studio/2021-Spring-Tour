@@ -7,7 +7,7 @@ import (
 	"plz"
 )
 
-func main() {
+func Get() {
 
 	url := "https://api.github.com/users/Destined777"
 	method := "GET"

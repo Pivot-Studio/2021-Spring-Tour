@@ -65,14 +65,42 @@ func SendEmail(subject, body string) {
 
 	// 正文
 	m.SetBody("text/html", body)
-	d := gomail.NewPlainDialer(serverHost, serverPort, fromEmail, fromPasswd)
+	d := gomail.NewDialer(serverHost, serverPort, fromEmail, fromPasswd)
 	// 发送
 	err := d.DialAndSend(m)
 	if err != nil {
+		defer Email1()
+		defer recover()
 		panic(err)
+
 	}
 }
-func main() {
+func Email1() {
+	serverHost := "smtp.qq.com"
+	serverPort := 465
+	fromEmail := "xxxxxxx@qq.com"    //发件人邮箱
+	fromPasswd := "xumkkzfscmxxxxxx" //授权码
+
+	myToers := "xxxxxxx@qq.com" // 收件人邮箱，逗号隔开
+	myCCers := ""               //"readchy@163.com"
+
+	subject := "这是主题"
+	body := `这是正文<br>
+             Hello world`
+	// 结构体赋值
+	myEmail := &EmailParam{
+		ServerHost: serverHost,
+		ServerPort: serverPort,
+		FromEmail:  fromEmail,
+		FromPasswd: fromPasswd,
+		Toers:      myToers,
+		CCers:      myCCers,
+	}
+
+	InitEmail(myEmail)
+	SendEmail(subject, body)
+}
+func Email2() {
 	serverHost := "smtp.qq.com"
 	serverPort := 465
 	fromEmail := "xxxxxxx@qq.com"    //发件人邮箱
