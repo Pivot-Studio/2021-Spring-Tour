@@ -1,4 +1,4 @@
-package database
+package models
 
 import (
 	"fmt"
@@ -44,6 +44,8 @@ func init(){
 	if Db.Error != nil{
 		fmt.Printf("database error: %v\n", Db.Error)
 	}
+	//迁移数据表
+	_ = Db.AutoMigrate(Comments{})
 	//禁用默认表名复数形式
 	Db.SingularTable(true)
 }

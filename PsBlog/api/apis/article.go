@@ -7,24 +7,30 @@ import (
 	"github.com/unknwon/com"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
 //获得多个文章
 func GetArticles(c *gin.Context){
-	data, err := model.GetAllArticles()
-	if err != nil{
-		c.JSON(http.StatusOK, gin.H{
-			"code" : -1,
-			"msg" : "列表失败",
-		})
-	}else{
-		c.JSON(http.StatusOK, gin.H{
-			"code" : 1,
-			"msg" : "查找成功",
-			"data" : data,
-		})
+	//实现分页功能
+	pageSize, _ := strconv.Atoi( c.Query("pagesize"))
+	pageNum, _ := strconv.Atoi(c.Query("pagenum"))
+	//gorm中将下列值设为-1则limit/offset不受限制
+	if pageSize == 0{
+		pageSize = -1
 	}
+	if pageNum == 0{
+		pageNum = -1
+	}
+	data := model.GetAllArticles(pageSize, pageNum)
+	code = 1
+	message = "查询成功"
+	c.JSON(http.StatusOK, gin.H{
+		"status": code,
+		"data": data,
+		"msg": message,
+	})
 }
 
 //获取指定文章
@@ -32,7 +38,7 @@ func GetArticle(c *gin.Context)  {
 	//通过id查询
 	//com包进行类型转换
 	id := com.StrTo(c.Param("id")).MustInt()
-	var article model.Article
+	var article model.Articles
 	flag := article.GetArticleByID(int(id))
 	if flag == true{
 		c.JSON(http.StatusOK, gin.H{
@@ -65,7 +71,7 @@ func AddArticle(c *gin.Context) {
 		data["title"] = title
 		data["content"] = content
 		data["date_time"] = time.Now() //当前时间
-		var article model.Article
+		var article model.Articles
 		//添加文章
 		_ = article.AddArticle(data)
 		c.JSON(http.StatusOK, gin.H{
@@ -104,7 +110,7 @@ func UpdateArticle(c *gin.Context) {
 		data["title"] = title
 		data["content"] = content
 		data["date_time"] = time.Now() //当前时间
-		var article model.Article
+		var article model.Articles
 		//添加文章
 		article.UpdateArticle(id, data)
 		c.JSON(http.StatusOK, gin.H{
@@ -127,7 +133,7 @@ func UpdateArticle(c *gin.Context) {
 //删除文章
 func DeleteArticle(c *gin.Context)  {
 	id := com.StrTo(c.Param("id")).MustInt()
-	var article model.Article
+	var article model.Articles
 	flag := article.DeleteArticle(int(id))
 	if flag == true{
 		c.JSON(http.StatusOK, gin.H{

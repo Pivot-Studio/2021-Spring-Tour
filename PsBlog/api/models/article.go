@@ -1,13 +1,12 @@
 package models
 
 import (
-	orm "2021-Spring-Tour/PsBlog/api/database"
 	"github.com/jinzhu/gorm"
 	"time"
 )
 
 //基本数据
-type Article struct {
+type Articles struct {
 	ID    int `json:"id" gorm:"primary_key"`
 	TagId int `json:"tag_id" gorm:"index"`
 	Title string `json:"title"`
@@ -16,8 +15,8 @@ type Article struct {
 }
 
 //添加文章
-func (article Article)AddArticle(a map[string]interface{})  (err error)  {
-	res := orm.Db.Create(&Article{
+func (article Articles)AddArticle(a map[string]interface{})  (err error)  {
+	res := Db.Create(&Articles{
 		TagId: a["tag_id"].(int),
 		Title: a["title"].(string),
 		Content: a["content"].(string),
@@ -30,8 +29,8 @@ func (article Article)AddArticle(a map[string]interface{})  (err error)  {
 	return
 }
 //通过id查找
-func (article *Article)GetArticleByID(id int) bool{
-	err := orm.Db.Where("id = ?", id).First(&article).Error
+func (article *Articles)GetArticleByID(id int) bool{
+	err := Db.Where("id = ?", id).First(&article).Error
 	if err != nil{
 		return false
 	}
@@ -39,23 +38,25 @@ func (article *Article)GetArticleByID(id int) bool{
 }
 
 //更新文章
-func (article Article)UpdateArticle(id int, data interface {}) bool {
-	orm.Db.Model(&Article{}).Where("id = ?", id).Updates(data)
+func (article Articles)UpdateArticle(id int, data interface {}) bool {
+	Db.Model(&Articles{}).Where("id = ?", id).Updates(data)
 
 	return true
 }
 
 //列表
-func GetAllArticles()(articles []Article, err error){
-	if err = orm.Db.Find(&articles).Error;err!=nil{
-		return
+func GetAllArticles(pageSize int, pageNum int) []Articles{
+	var articles []Articles
+	err := Db.Limit(pageSize).Offset((pageNum-1)*pageSize).Find(&articles).Error
+	if err != nil && err != gorm.ErrRecordNotFound{
+		return nil
 	}
-	return
+	return articles
 }
 
 //删除文章
-func(article Article)DeleteArticle(id int) bool {
-	err := orm.Db.Where("id=?", id).Delete(Article{}).Error
+func(article Articles)DeleteArticle(id int) bool {
+	err := Db.Where("id=?", id).Delete(Articles{}).Error
 	if err != nil{
 		return false
 	}
@@ -63,15 +64,15 @@ func(article Article)DeleteArticle(id int) bool {
 }
 
 //生成时间戳
-func (article *Article) BeforeCreate(scope *gorm.Scope) error {
-	_ = scope.SetColumn("CreatedOn", time.Now().Unix())
-
-	return nil
-}
-
-func (article *Article) BeforeUpdate(scope *gorm.Scope) error {
-	_ = scope.SetColumn("ModifiedOn", time.Now().Unix())
-
-	return nil
-}
+//func (article *Articles) BeforeCreate(scope *gorm.Scope) error {
+//	_ = scope.SetColumn("CreatedOn", time.Now().Unix())
+//
+//	return nil
+//}
+//
+//func (article *Articles) BeforeUpdate(scope *gorm.Scope) error {
+//	_ = scope.SetColumn("ModifiedOn", time.Now().Unix())
+//
+//	return nil
+//}
 
