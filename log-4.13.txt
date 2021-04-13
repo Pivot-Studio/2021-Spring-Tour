@@ -1,0 +1,16 @@
+实现功能：
+完成了part3中轮询用户的event并且当发生PushEvent时发送邮件的功能
+
+
+问题:
+判断两个字符串的值是否相等时用==时，结果会永远显示不相等
+解决：
+两个字符串的id不同，==不仅会判断值是否相等，还会判断id是否相等。改用.equals（）函数
+问题：
+从头开始检索返回的events信息时得不到最新的PushEvent
+解决：
+返回的events信息是倒序的，应该从尾开始检索
+问题：
+明明发生了PushEvent，但是检索出来的所有的PushEvent数量没有发生变化
+解决：
+返回的events信息只包含最新的30个event信息，当发生了PushEvent之后，会“挤掉“上一次返回的event信息中的最后一个event，如果这个event恰好是PushEvent，那么检索出来的PushEvent数量不会发生变化。
