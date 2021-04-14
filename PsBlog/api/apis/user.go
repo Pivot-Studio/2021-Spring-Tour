@@ -73,10 +73,10 @@ func EditUser(c *gin.Context){
 	var data model.User
 	id ,_:= strconv.Atoi(c.Param("id"))
 	_ = c.ShouldBindJSON(&data)
-	fmt.Println("username:", data.Username)
+	//fmt.Println("username:", data.Username)
 	flag := model.CheckUser(data.Username)
-	fmt.Println("flag: ", flag)
-	fmt.Println(data.Username)
+	//fmt.Println("flag: ", flag)
+	//fmt.Println(data.Username)
 	if flag == true{
 		code = 1
 		message = "更新成功"
@@ -107,4 +107,49 @@ func DeleteUser(c *gin.Context){
 		"status": code,
 		"msg": message,
 	})
+}
+
+//修改密码
+func ChangePassword(c *gin.Context){
+	var data model.User
+	id, _ := strconv.Atoi(c.Param("id"))
+	newPassWd := c.Query("newPassword")
+	_ = c.ShouldBindJSON(&data)
+	var res model.User
+	model.Db.Select("id").Where("username = ?", data.Username).First(&res)
+	fmt.Println("name", res.Username)
+	if data.Username != res.Username{
+		// 无此用户
+		c.JSON(http.StatusOK,gin.H{
+			"success":false,
+			"code":400,
+			"msg":"无此用户",
+		})
+	}else{
+		// 密码是否匹配
+		if model.ScryptPw(data.Username) != res.Password {
+			fmt.Println("password error")
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"code":    400,
+				"msg":     "密码错误",
+			})
+		}else{
+			flag := model.ChangePasswd(id,model.ScryptPw(newPassWd))
+			if flag == true{
+				code = 1
+				message = "修改成功"
+			}else {
+				code = -1
+				message = "修改失败"
+			}
+			c.JSON(
+				http.StatusOK, gin.H{
+					"status":  code,
+					"message": message,
+				},
+			)
+		}
+	}
+
 }

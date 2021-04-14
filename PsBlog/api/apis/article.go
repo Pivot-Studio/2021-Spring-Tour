@@ -4,7 +4,6 @@ import (
 	model "2021-Spring-Tour/PsBlog/api/models"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
-	"github.com/unknwon/com"
 	"log"
 	"net/http"
 	"strconv"
@@ -37,7 +36,7 @@ func GetArticles(c *gin.Context){
 func GetArticle(c *gin.Context)  {
 	//通过id查询
 	//com包进行类型转换
-	id := com.StrTo(c.Param("id")).MustInt()
+	id, _ := strconv.Atoi(c.Param("id"))
 	var article model.Articles
 	flag := article.GetArticleByID(int(id))
 	if flag == true{
@@ -56,7 +55,7 @@ func GetArticle(c *gin.Context)  {
 
 //添加文章
 func AddArticle(c *gin.Context) {
-	tagId := com.StrTo(c.Query("tag_id")).MustInt()
+	tagId, _ := strconv.Atoi(c.Query("tag_id"))
 	title := c.Query("title")
 	content := c.Query("content")
 	//datetime := c.Query("time")
@@ -95,8 +94,8 @@ func UpdateArticle(c *gin.Context) {
 
 	valid := validation.Validation{}
 
-	id := com.StrTo(c.Param("id")).MustInt()
-	tagId := com.StrTo(c.Query("tag_id")).MustInt()
+	id, _ := strconv.Atoi(c.Param("id"))
+	tagId, _ := strconv.Atoi(c.Query("tag_id"))
 	title := c.Query("title")
 	content := c.Query("content")
 
@@ -132,7 +131,7 @@ func UpdateArticle(c *gin.Context) {
 
 //删除文章
 func DeleteArticle(c *gin.Context)  {
-	id := com.StrTo(c.Param("id")).MustInt()
+	id, _ := strconv.Atoi(c.Param("id"))
 	var article model.Articles
 	flag := article.DeleteArticle(int(id))
 	if flag == true{

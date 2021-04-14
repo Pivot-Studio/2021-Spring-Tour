@@ -25,7 +25,7 @@ func SetToken(username string, password string)(string, bool)  {
 	expireTime := time.Now().Add(10*time.Hour)
 	SetClaims := MyClaims{
 		Username: username,
-		Password: password,
+		//Password: password,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer: "zbs",

@@ -16,6 +16,7 @@ func InitRouter()*gin.Engine{
 		//用户模块的路由接口
 		router.PUT("/user/:id", EditUser)
 		router.DELETE("/user/:id", DeleteUser)
+		router.PUT("/changePw/:id", ChangePassword)
 
 		//文章模块的路由接口
 		//添加文章

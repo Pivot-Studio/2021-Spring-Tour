@@ -29,7 +29,7 @@ func CheckUser(username string) bool{
 //注册用户
 func RegisterUser(data *User) bool{
 	//盐值加密
-	data.Password = ScryptPw(data.Password)
+	//data.Password = ScryptPw(data.Password)
 	err := Db.Create(&data).Error
 	if err != nil{
 		return false
@@ -53,7 +53,7 @@ func EditUser(id int, data *User)bool{
 	var maps = make(map[string] interface{})
 	maps["username"] = data.Username
 	//密码暂不在这更新
-	err := Db.Model(&user).Where("id = ?", id).Update(maps)
+	err := Db.Model(&user).Where("id = ?", id).Update(maps).Error
 	if err != nil{
 		return false
 	}
@@ -70,6 +70,19 @@ func Delete(id int)bool{
 	}
 	return true
 }
+
+//钩子函数处理事务
+//在创建和更新密码前进行加密
+func (u *User) BeforeCreate(_ *gorm.DB) (err error) {
+	u.Password = ScryptPw(u.Password)
+	return nil
+}
+
+func (u *User) BeforeUpdate(_ *gorm.DB) (err error) {
+	u.Password = ScryptPw(u.Password)
+	return nil
+}
+
 
 //密码加密
 func ScryptPw(password string) string{
@@ -99,5 +112,17 @@ func CheckLogin(username string, password string) string  {
 	if ScryptPw(password) != user.Password{
 		return "密码错误"
 	}
-	return ""
+	return "成功登录"
+}
+
+//修改密码
+func ChangePasswd(id int, newPasswd string) bool{
+	var user User
+	var maps = make(map[string]interface{})
+	maps["password"] = newPasswd
+	err := Db.Model(&user).Where("id = ?", id).Updates(maps).Error
+	if err != nil{
+		return false
+	}
+	return true
 }

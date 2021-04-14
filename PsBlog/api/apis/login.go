@@ -12,7 +12,7 @@ func Login(c*gin.Context)  {
 	var token string
 	_ = c.ShouldBindJSON(&data)
 	message = model.CheckLogin(data.Username, data.Password)
-	if message == ""{
+	if message == "成功登录"{
 		token ,_ = middleware.SetToken(data.Username, data.Password)
 	}
 	c.JSON(http.StatusOK, gin.H{

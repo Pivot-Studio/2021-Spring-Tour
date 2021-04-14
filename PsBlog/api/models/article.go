@@ -63,16 +63,4 @@ func(article Articles)DeleteArticle(id int) bool {
 	return true
 }
 
-//生成时间戳
-//func (article *Articles) BeforeCreate(scope *gorm.Scope) error {
-//	_ = scope.SetColumn("CreatedOn", time.Now().Unix())
-//
-//	return nil
-//}
-//
-//func (article *Articles) BeforeUpdate(scope *gorm.Scope) error {
-//	_ = scope.SetColumn("ModifiedOn", time.Now().Unix())
-//
-//	return nil
-//}
 
