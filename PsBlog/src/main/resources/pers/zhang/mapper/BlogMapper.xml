@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.zhang.mapper.BlogMapper">
+    <insert id="createBlog" parameterType="pers.zhang.pojo.Blog" keyProperty="id">
+        insert into blog(authorId,content) values (#{authorId},#{content})
+    </insert>
+    <delete id="deleteBlog" parameterType="pers.zhang.pojo.Blog">
+        delete from blog where id = #{id}
+    </delete>
+    <select id="getBlog" resultType="pers.zhang.pojo.Blog">
+        select * from blog where id = #{id};
+    </select>
+    <update id="updateBlog" parameterType="pers.zhang.pojo.Blog">
+        update blog set content = #{content} where id = #{id}
+    </update>
+</mapper>
