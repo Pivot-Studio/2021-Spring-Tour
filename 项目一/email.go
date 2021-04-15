@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"plz"
 	"strings"
 
 	"github.com/gomail"
@@ -69,24 +71,25 @@ func SendEmail(subject, body string) {
 	// 发送
 	err := d.DialAndSend(m)
 	if err != nil {
+		fmt.Println("123")
 		defer Email1()
 		defer recover()
 		panic(err)
 
 	}
 }
-func Email1() {
-	serverHost := "smtp.qq.com"
-	serverPort := 465
-	fromEmail := "xxxxxxx@qq.com"    //发件人邮箱
-	fromPasswd := "xumkkzfscmxxxxxx" //授权码
+func Email1() { //在监控用户有新的event时发送邮件
+	serverHost := "smtp.163.com"
+	serverPort := 25
+	fromEmail := "destined777@163.com" //发件人邮箱
+	fromPasswd := plz.Password()       //授权码
 
-	myToers := "xxxxxxx@qq.com" // 收件人邮箱，逗号隔开
-	myCCers := ""               //"readchy@163.com"
+	myToers := "destined777@163.com" // 收件人邮箱，逗号隔开
+	myCCers := ""                    //"readchy@163.com"
 
-	subject := "这是主题"
-	body := `这是正文<br>
-             Hello world`
+	subject := "关注的GITHUB用户有新的event"
+	body := `正文<br>
+             您所监控的用户有新的event`
 	// 结构体赋值
 	myEmail := &EmailParam{
 		ServerHost: serverHost,
@@ -97,21 +100,23 @@ func Email1() {
 		CCers:      myCCers,
 	}
 
+	fmt.Println("1")
 	InitEmail(myEmail)
+	fmt.Println("12")
 	SendEmail(subject, body)
 }
-func Email2() {
-	serverHost := "smtp.qq.com"
+func Email2() { //在发送邮件时产生错误时发送邮件
+	serverHost := "smtp.163.com"
 	serverPort := 465
-	fromEmail := "xxxxxxx@qq.com"    //发件人邮箱
-	fromPasswd := "xumkkzfscmxxxxxx" //授权码
+	fromEmail := "destined777@163.com" //发件人邮箱
+	fromPasswd := plz.Password()       //授权码
 
-	myToers := "xxxxxxx@qq.com" // 收件人邮箱，逗号隔开
-	myCCers := ""               //"readchy@163.com"
+	myToers := "destined777@163.com" // 收件人邮箱，逗号隔开
+	myCCers := ""                    //"readchy@163.com"
 
-	subject := "这是主题"
-	body := `这是正文<br>
-             Hello world`
+	subject := "邮件出错"
+	body := `正文<br>
+             您采取的监控GitHub用户发送的邮件出现了错误`
 	// 结构体赋值
 	myEmail := &EmailParam{
 		ServerHost: serverHost,

@@ -63,6 +63,7 @@ func Long_poll2() string {
 	}
 	return string(body1)
 }
+
 func digui() {
 	str1 := Long_poll1()
 	time.Sleep(5 * time.Second)
@@ -76,5 +77,6 @@ func digui() {
 	}
 }
 func main() {
+	//Email1()//测试可发邮件
 	digui()
 }
