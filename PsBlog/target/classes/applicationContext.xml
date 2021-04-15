@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/aop
+   http://www.springframework.org/schema/aop/spring-aop.xsd
+   http://www.springframework.org/schema/tx
+   http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 开启注解扫描，处理service和dao，但是不需要处理 controller -->
+    <context:component-scan base-package="pers.zhang">
+        <!-- 配置哪些注解不扫描 -->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!-- 读取db.properties配置文件 -->
+    <context:property-placeholder location="classpath:db.properties" />
+
+    <!-- 配置DataSource -->
+    <bean id="dataSouce" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="maxActive" value="${jdbc.maxActive}" />
+    </bean>
+
+    <!-- 配置SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 注入数据源 -->
+        <property name="dataSource" ref="dataSouce" />
+        <!-- 配置包别名 -->
+        <property name="typeAliasesPackage" value="pers.zhang.pojo" />
+        <!-- 配置映射文件路径，*是通配符，表示以任何开头的意识，主要是想一次扫描所有映射文件 -->
+        <property name="mapperLocations" value="classpath:pers/zhang/mapper/*Mapper.xml"/>
+    </bean>
+    <!--
+    批量创建Mapper代理对象 ,使用包扫描创建Mapper代理对象
+    使用桥梁包中的类：org.mybatis.spring.mapper.MapperScannerConfigurer
+-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 配置需要创建Mapper接口代理对象对应的包 -->
+        <property name="basePackage" value="pers.zhang.mapper" />
+        <!-- 配置SqlSessionFactoryBean 的名称,不是引用(可以省略) -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+</beans>

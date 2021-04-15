@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.zhang.mapper.CommitMapper">
+    <insert id="addCommit" parameterType="pers.zhang.pojo.Commit" keyProperty="cid">
+        insert into commit (uid,ccontent,id) values (#{committerId},#{ccontent},#{target});
+    </insert>
+    <delete id="deleteCommit" parameterType="pers.zhang.pojo.Commit">
+        delete from commit where cid = #{cid}
+    </delete>
+    <select id="getCommitByCid" parameterType="pers.zhang.pojo.Commit" resultMap="commit">
+        select * from commit where cid = #{cid}
+    </select>
+    <select id="getCommitOfBlog" parameterType="pers.zhang.pojo.Blog" resultMap="commit">
+        select * from commit where id = #{id}
+    </select>
+    <resultMap id="commit" type="pers.zhang.pojo.Commit">
+        <id property="cid" column="cid" />
+        <result property="committerId" column="uid"/>
+        <result property="ccontent" column="ccontent"/>
+        <result property="target" column="id"/>
+    </resultMap>
+</mapper>

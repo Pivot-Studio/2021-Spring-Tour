@@ -4,7 +4,7 @@ public class JudgementUtile {
     private String status;
 
     public void setStatus(int judgement){
-        if(judgement==1){
+        if(judgement!=0){
             status="OK";
         }else {
             status="FALSE";

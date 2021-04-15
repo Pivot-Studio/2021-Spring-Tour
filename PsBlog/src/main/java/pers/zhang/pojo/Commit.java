@@ -2,7 +2,7 @@ package pers.zhang.pojo;
 
 public class Commit {
     private int cid;
-    private int commiter;
+    private int committerId;
     private String ccontent;
     private int target;
 
@@ -10,7 +10,7 @@ public class Commit {
     public String toString() {
         return "Commit{" +
                 "cid=" + cid +
-                ", commiter=" + commiter +
+                ", committerId=" + committerId +
                 ", ccontent='" + ccontent + '\'' +
                 ", target=" + target +
                 '}';
@@ -24,12 +24,12 @@ public class Commit {
         this.cid = cid;
     }
 
-    public int getCommiter() {
-        return commiter;
+    public int getCommitterId() {
+        return committerId;
     }
 
-    public void setCommiter(int commiter) {
-        this.commiter = commiter;
+    public void setCommitterId(int committerId) {
+        this.committerId = committerId;
     }
 
     public String getCcontent() {
