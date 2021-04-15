@@ -4,13 +4,23 @@ import (
 	model "2021-Spring-Tour/PsBlog/api/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/time/rate"
 	"net/http"
 	"strconv"
+	"time"
 )
+
+//创建限速器
+//60s加入一个token
+var R rate.Limit = rate.Every( 60 * time.Second)
+//token容量设置为1
+var Limiter = rate.NewLimiter(R, 1)
+//暂存验证码
+var Vcode string
+
 //info
 var message string
 var code int
-
 //查询用户是否存在
 func UserExist(c *gin.Context){
 
@@ -21,7 +31,7 @@ func UserExist(c *gin.Context){
 func AddUser(c *gin.Context){
 	var data model.User
 	_ = c.ShouldBindJSON(&data)
-	flag := model.CheckUser(data.Username)
+	flag ,_:= model.CheckUser(data.Username)
 	//fmt.Println("username: ", data.Username)
 	//验证输入，前端验证
 	//valid := validation.Validation{}
@@ -74,7 +84,7 @@ func EditUser(c *gin.Context){
 	id ,_:= strconv.Atoi(c.Param("id"))
 	_ = c.ShouldBindJSON(&data)
 	//fmt.Println("username:", data.Username)
-	flag := model.CheckUser(data.Username)
+	flag ,_:= model.CheckUser(data.Username)
 	//fmt.Println("flag: ", flag)
 	//fmt.Println(data.Username)
 	if flag == true{
@@ -111,13 +121,16 @@ func DeleteUser(c *gin.Context){
 
 //修改密码
 func ChangePassword(c *gin.Context){
-	var data model.User
+	var data model.Verify
 	id, _ := strconv.Atoi(c.Param("id"))
 	newPassWd := c.Query("newPassword")
+	//想加个时效判断
+	//Email := c.Query("email")
 	_ = c.ShouldBindJSON(&data)
-	var res model.User
-	model.Db.Select("id").Where("username = ?", data.Username).First(&res)
-	fmt.Println("name", res.Username)
+	fmt.Println("data:", data.Username)
+	var res *model.User
+	_, res = model.CheckUser(data.Username)
+	fmt.Println("name", res.Password==model.ScryptPw(data.Password))
 	if data.Username != res.Username{
 		// 无此用户
 		c.JSON(http.StatusOK,gin.H{
@@ -127,7 +140,7 @@ func ChangePassword(c *gin.Context){
 		})
 	}else{
 		// 密码是否匹配
-		if model.ScryptPw(data.Username) != res.Password {
+		if model.ScryptPw(data.Password) != res.Password {
 			fmt.Println("password error")
 			c.JSON(http.StatusOK, gin.H{
 				"success": false,
@@ -135,13 +148,26 @@ func ChangePassword(c *gin.Context){
 				"msg":     "密码错误",
 			})
 		}else{
-			flag := model.ChangePasswd(id,model.ScryptPw(newPassWd))
-			if flag == true{
+			//用户名和密码都对之后再发送邮件
+			fmt.Println("ver: ", data.Email)
+			//Allow每次调用消耗一个token, token数为0则阻塞
+			if Limiter.Allow() {
+				Vcode = model.SendEmail(data.Email)
 				code = 1
-				message = "修改成功"
-			}else {
-				code = -1
-				message = "修改失败"
+				message = "得到验证码"
+				fmt.Println("开始阻塞")
+			}
+			fmt.Println("data", data.VerifyCode,"  ", Vcode)
+			if data.VerifyCode == Vcode {
+				//Allow每次消耗一个token，如果token数为0则阻塞
+				flag := model.ChangePasswd(id, model.ScryptPw(newPassWd))
+				if flag == true {
+					code = 1
+					message = "修改成功"
+				} else {
+					code = -1
+					message = "修改失败"
+				}
 			}
 			c.JSON(
 				http.StatusOK, gin.H{

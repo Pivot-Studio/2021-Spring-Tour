@@ -15,14 +15,14 @@ type User struct {
 }
 
 //查询用户是否存在
-func CheckUser(username string) bool{
+func CheckUser(username string) (bool, *User){
 	var data User
 	//查询第一个参数
-	Db.Select("id").Where("username = ?", username).First(&data)
+	Db.Select("id, username, password").Where("username = ?", username).First(&data)
 	if data.ID > 0{
-		return false
+		return false, &data
 	}else{
-		return true
+		return true, &data
 	}
 }
 
