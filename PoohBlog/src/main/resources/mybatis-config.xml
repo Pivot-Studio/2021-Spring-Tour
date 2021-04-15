@@ -3,13 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+<!--    设置标准日志，在终端输出-->
     <settings>
         <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
-<!--配置数据源，交给spring做-->
+<!--    设置别名-->
     <typeAliases>
         <package name="com.nick.pojo"/>
     </typeAliases>
+<!--    注册mapper-->
     <mappers>
         <mapper class="com.nick.dao.BlogMapper"/>
         <mapper class="com.nick.dao.UserMapper"/>

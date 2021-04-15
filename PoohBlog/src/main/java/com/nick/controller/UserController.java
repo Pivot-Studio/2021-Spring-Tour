@@ -10,6 +10,9 @@ import com.nick.util.jwtUtil.JwtUtils;
 import com.nick.utilObjects.AddUserObject;
 import com.nick.utilObjects.LogInUserObject;
 import com.nick.utilObjects.ModifyPassWordObject;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +30,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequestMapping("user/")
+@Api(value = "用户")
 public class UserController {
 
     @Autowired
@@ -37,7 +41,8 @@ public class UserController {
     //done
     @ResponseBody
     @PostMapping(value = "/signIn",produces = "text/html;charset=UTF-8")
-    public String signIn(@RequestBody AddUserObject addUserObject) throws Exception {
+    @ApiOperation(value = "注册")
+    public String signIn(@ApiParam(value = "增加用户信息",required = true) @RequestBody AddUserObject addUserObject) throws Exception {
         System.out.println(addUserObject);
         int res=userService.signIn(addUserObject);
         return JudgmentToJson.judgmentToJson(res);
@@ -52,7 +57,8 @@ public class UserController {
     //done
     @ResponseBody
     @PostMapping(value = "/logIn",produces = "text/html;charset=UTF-8")
-    public String LogIn(@RequestBody LogInUserObject logInUserObject) throws Exception {
+    @ApiOperation(value = "登陆")
+    public String LogIn(@ApiParam(value = "注册信息",required = true) @RequestBody LogInUserObject logInUserObject) throws Exception {
         System.out.println(logInUserObject);
         User user = userService.logIn(logInUserObject);
         if(user==null)
@@ -75,7 +81,8 @@ public class UserController {
 
     @ResponseBody
     @PostMapping(value = "/modifyPassWord",produces = "text/html;charset=UTF-8")
-    public String modifyPassWord(@RequestBody ModifyPassWordObject modifyPassWordObject) throws Exception {
+    @ApiOperation(value = "修改密码")
+    public String modifyPassWord(@ApiParam(value = "修改信息") @RequestBody ModifyPassWordObject modifyPassWordObject) throws Exception {
         int res=userService.modifyPassWord(modifyPassWordObject);
         return JudgmentToJson.judgmentToJson(res);
     }

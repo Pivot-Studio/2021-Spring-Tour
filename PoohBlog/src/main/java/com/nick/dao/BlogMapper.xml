@@ -40,5 +40,10 @@
         order by releaseDateTime desc
         limit #{beginIndex},#{stepSize};
     </select>
+    <select id="popBlog" resultType="com.nick.pojo.Blog">
+        select * from Blog
+        order by releaseDateTime desc
+        limit 0,1;
+    </select>
 </mapper>
 

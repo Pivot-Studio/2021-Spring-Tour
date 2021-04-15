@@ -1,6 +1,7 @@
 package com.nick.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.nick.controller.BlogController;
 import com.nick.dao.BlogMapper;
 import com.nick.pojo.Blog;
 import com.nick.pojo.User;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -46,8 +48,11 @@ public class BlogServiceImpl implements BlogService{
         }
         else {
             //返回操作删除后的操作
+            synchronized (BlogController.lock){
+            int res=blogMapper.deleteBlog(id);
             RedisOperation.deleteItem(jedis,id);
-            return blogMapper.deleteBlog(id);
+            return res;
+            }
         }
     }
     //done
@@ -77,8 +82,11 @@ public class BlogServiceImpl implements BlogService{
             blog.setContent(updateBlogObject.getContent());
             }
         }
-        RedisOperation.updateItem(jedis,blog);
-        return blogMapper.updateBlog(blog);
+        synchronized (BlogController.lock) {
+            int res = blogMapper.updateBlog(blog);
+            RedisOperation.updateItem(jedis, blog);
+            return res;
+        }
     }
 
     //done
@@ -102,8 +110,12 @@ public class BlogServiceImpl implements BlogService{
             blog.setTitle(addBlogObject.getTitle());
             blog.setWriterId(addBlogObject.getWriterId());
             blog.setTypeId(addBlogObject.getTypeId());
-            RedisOperation.addItem(jedis,blog);
-            return blogMapper.addBlog(blog);
+            synchronized (BlogController.lock) {
+                int res = blogMapper.addBlog(blog);
+                blog=blogMapper.popBlog();
+                RedisOperation.addItem(jedis, blog);
+                return res;
+            }
         }
     }
     //done

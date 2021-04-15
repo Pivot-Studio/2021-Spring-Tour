@@ -25,4 +25,6 @@ public interface BlogMapper {
     public int getBlogIsDeleted(int id);
     //分页查询博客
     public List<Blog> queryBlogByPagingDesc(@Param("beginIndex") int beginIndex,@Param("stepSize") int stepSize);
+    //获得最新添加的博文
+    public Blog popBlog();
 }

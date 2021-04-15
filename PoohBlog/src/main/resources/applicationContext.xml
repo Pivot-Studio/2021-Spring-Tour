@@ -16,10 +16,13 @@
     <import resource="spring-dao.xml"/>
     <import resource="spring-mvc.xml"/>
 
-
+<!--key为用户邮箱，value为验证uid-->
     <bean id="UIDMaiVerification" class="java.util.concurrent.ConcurrentHashMap"/>
+    <!--key为用户邮箱，value为验证增加用户的用户信息-->
     <bean id="UserMap" class="java.util.concurrent.ConcurrentHashMap"/>
+    <!--key为用户邮箱，value为验证用户修改密码的信息-->
     <bean id="UserModifyInfo" class="java.util.concurrent.ConcurrentHashMap"/>
+    <!--连接本地redis-->
     <bean id="Jedis" class="redis.clients.jedis.Jedis">
         <constructor-arg name="host" value="127.0.0.1"/>
         <constructor-arg name="port" value="6379"/>

@@ -23,4 +23,10 @@
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+
+    <!-- 将SwaggerConfig配置类注入 -->
+    <bean class="com.nick.util.swaggerUtil.SwaggerConfig"/>
+    <!-- 引用Swagger 默认配置 -->
+    <bean class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration" id="swagger2Config"/>
+
 </beans>

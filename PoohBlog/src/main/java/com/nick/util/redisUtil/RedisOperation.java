@@ -12,7 +12,7 @@ import java.util.*;
 public class RedisOperation {
     public static void addItem(Jedis jedis, Blog blog) throws JsonProcessingException {
         jedis.set(Integer.toString(blog.getId()), ObjectToJson.objectToJson(blog));
-        jedis.zadd("BlogZset", Double.parseDouble(Double.toString(blog.getReleaseDateTime().getNanos())),Integer.toString(blog.getId()));
+        jedis.zadd("BlogZset", blog.getReleaseDateTime().getNanos(),Integer.toString(blog.getId()));
     }
 
 
