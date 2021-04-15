@@ -10,4 +10,5 @@ public interface CommitMapper {
     int deleteCommit(Commit commit);
     Commit getCommitByCid(Commit commit);
     List<Commit> getCommitOfBlog(Blog blog);
+    List<Commit> getCommitPageOfBlog(Blog blog);
 }

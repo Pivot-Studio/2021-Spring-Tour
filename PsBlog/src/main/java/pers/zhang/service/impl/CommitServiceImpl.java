@@ -2,6 +2,7 @@ package pers.zhang.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pers.zhang.mapper.BlogMapper;
 import pers.zhang.mapper.CommitMapper;
 import pers.zhang.pojo.Blog;
 import pers.zhang.pojo.Commit;
@@ -13,10 +14,17 @@ import java.util.List;
 public class CommitServiceImpl implements CommitService {
     @Autowired
     private CommitMapper commitMapper;
+    @Autowired
+    private BlogMapper blogMapper;
 
+    //作用：发表一条评论
+    //参数：评论者id号=committerId，评论内容=content，所评论博客id号=id
+    //返回值：成功为1，因为评论内容为空或目标博客不存在失败返回0
     @Override
     public int addCommit(int committerId, String ccontent, int target) {
-        if(ccontent==null||target==0) return 0;
+        Blog blog = new Blog();
+        blog.setId(target);
+        if(ccontent==null||blogMapper.getBlog(blog)==null) return 0;
         Commit commit = new Commit();
         commit.setCommitterId(committerId);
         commit.setCcontent(ccontent);
@@ -24,6 +32,9 @@ public class CommitServiceImpl implements CommitService {
         return commitMapper.addCommit(commit);
     }
 
+    //作用：删除一条评论
+    //参数：评论id号=cid
+    //返回值：删除记录数（成功为1，因为评论不存在失败为0）
     @Override
     public int deleteCommit(int cid) {
         Commit commit = new Commit();
@@ -31,6 +42,9 @@ public class CommitServiceImpl implements CommitService {
         return commitMapper.deleteCommit(commit);
     }
 
+    //作用：获取一条评论
+    //参数：评论id号=cid
+    //返回值：commit类对象
     @Override
     public Commit getCommitByCid(int cid) {
         Commit commit = new Commit();
@@ -38,6 +52,9 @@ public class CommitServiceImpl implements CommitService {
         return commitMapper.getCommitByCid(commit);
     }
 
+    //作用：获取一篇博客的所有评论
+    //参数：博客id号=id
+    //返回值：commit类对象集合
     @Override
     public List<Commit> getCommitOfBlog(int target) {
         Blog blog = new Blog();
