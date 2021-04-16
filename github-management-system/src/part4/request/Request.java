@@ -1,4 +1,4 @@
-package part4;
+package part4.favorite.menu;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -10,8 +10,10 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import part1.JSONUtil;
-import part1.User;
+import part4.favorite.operation.OperationOfFavorite;
+import part4.favorite.operation.Sort;
+import privacy.JSONUtil;
+import privacy.User;
 
 import java.io.*;
 import java.util.Scanner;
@@ -19,18 +21,20 @@ import java.util.Scanner;
 public class Request {
     public static void main(String[] args) throws IOException {
         int sentry[]=new int[10000];
-        File f1=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\part1","user.json");
-        byte[] bytes = new byte[]{};
-        try {
-            FileInputStream stream=new FileInputStream(f1);//创建一个输入流
-            bytes=stream.readAllBytes();//读取输入流中所有字节
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String jsonString = new String(bytes);
-        User user = JSONObject.parseObject(jsonString, User.class);//将json数据转换成了User对象
+        //File f1=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\part1","user.json");
+        //byte[] bytes = new byte[]{};
+        //try {
+            //FileInputStream stream=new FileInputStream(f1);//创建一个输入流
+            //bytes=stream.readAllBytes();//读取输入流中所有字节
+        //} catch (FileNotFoundException e) {
+            //e.printStackTrace();
+        //} catch (IOException e) {
+            //e.printStackTrace();
+        //}
+       // String jsonString = new String(bytes);
+        //User user = JSONObject.parseObject(jsonString, User.class);//将json数据转换成了User对象
+        JSONUtil jsonUtil=new JSONUtil();
+        User user=jsonUtil.get_key();
         String access_token=user.getAccess_token();//获取User对象中的access_token值
         HttpGet request = new HttpGet("https://api.github.com/users/machuanhu/starred?access_token="+access_token);//向github发起请求，获取starred列表
 
