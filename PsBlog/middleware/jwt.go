@@ -31,7 +31,7 @@ func SetToken(username string, password string)(string, bool)  {
 			Issuer: "zbs",
 		},
 	}
-	//
+	//jwt生成token固定的两个函数，且前一个一般用HS256
 	reqClaim := jwt.NewWithClaims(jwt.SigningMethodHS256, SetClaims)
 	token, err := reqClaim.SignedString(JwtKey)
 	if err != nil{
