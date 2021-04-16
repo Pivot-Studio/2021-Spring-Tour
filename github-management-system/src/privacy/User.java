@@ -1,9 +1,11 @@
-package part1;
+package privacy;
 
 public class User {
     private String name;
     private String password;
     private String access_token;
+    private String myEmailAccount;
+    private String myEmailPassword;
     public User() {}
 
     public String getName() {
@@ -28,5 +30,21 @@ public class User {
 
     public void setAccess_token(String access_token) {
         this.access_token = access_token;
+    }
+
+    public String getMyEmailAccount() {
+        return myEmailAccount;
+    }
+
+    public void setMyEmailAccount(String myEmailAccount) {
+        this.myEmailAccount = myEmailAccount;
+    }
+
+    public String getMyEmailPassword() {
+        return myEmailPassword;
+    }
+
+    public void setMyEmailPassword(String myEmailPassword) {
+        this.myEmailPassword = myEmailPassword;
     }
 }

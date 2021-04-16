@@ -1,4 +1,4 @@
-package part4;
+package part4.favorite.operation;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -68,6 +68,7 @@ public class OperationOfFavorite {
 //将给定的仓库从给定的收藏夹移除，并且当该仓库不在该收藏夹中时，提示错误。
         int j=0;
         int k=0;
+        boolean check=false;
         for(;j<jsonArray6.size();j++)
         {
             if(jsonArray6.getJSONObject(j).getString("favorite_name").equals(favorite_name))
@@ -77,10 +78,11 @@ public class OperationOfFavorite {
                     if(jsonArray8.getJSONArray(j).getJSONObject(k).getString("id").equals(jsonObject.getString("id")))
                     {
                         jsonArray8.getJSONArray(j).remove(jsonObject);
+                        check=true;
                         break;
                     }
                 }
-                if(k==jsonArray8.getJSONArray(j).size())
+                if(k==jsonArray8.getJSONArray(j).size()&& !check)
                 {
                     System.out.println("该仓库并不在此收藏夹中，请重新核对信息");
                     return;

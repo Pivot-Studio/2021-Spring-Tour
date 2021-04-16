@@ -1,4 +1,4 @@
-package part4;
+package part4.favorite.operation;
 
 import com.alibaba.fastjson.JSONArray;
 

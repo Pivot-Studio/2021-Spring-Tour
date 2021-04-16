@@ -10,7 +10,9 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import part1.User;
+import privacy.JSONUtil;
+import privacy.User;
+import part3.smtp.Smtp;
 
 import java.io.*;
 
@@ -21,18 +23,8 @@ public class Monitor {
     public static void main(String[] args) throws IOException {
         String a=null;//用来记录最新的PushEvent的id
         String b=null;
-        File f1=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\part1","user.json");
-        byte[] bytes = new byte[]{};
-        try {
-            FileInputStream stream = new FileInputStream(f1);//创建一个输入流
-            bytes = stream.readAllBytes();//读取输入流中所有字节
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String jsonString = new String(bytes);
-        User user = JSONObject.parseObject(jsonString, User.class);
+        JSONUtil jsonUtil=new JSONUtil();
+        User user=jsonUtil.get_key();
         String access_token = user.getAccess_token();
         //第一次请求
         HttpGet request = new HttpGet("https://api.github.com/users/machuanhu/events?access_token=" + access_token);
@@ -61,18 +53,18 @@ public class Monitor {
             try (FileWriter writefile = new FileWriter(f2)) {
                 //检索events列表
                 for (int j = 1; j < jsonArray.size() + 1; j++) {
-                    JSONObject jsonObject = (JSONObject) jsonArray.get(jsonArray.size()- j);
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(j-1);
                     writefile.write("事件类型:   " + jsonObject.getString("type")+"      "+"id:"+jsonObject.getString("id")+"\n");//将检索到的events的type和id存入PushEvents.txt中
                     if (jsonObject.getString("type").equals("PushEvent"))//用a记录第一次请求时最新的PushEvent的id
                     {
                         a=jsonObject.getString("id");
-                        continue;//检索到最新的PushEvent，停止检索
+                        break;//检索到最新的PushEvent，停止检索
                     }
                 }
             }
-            System.out.println(a+"    "+b);
+            //System.out.println(a+"    "+b);
             try {
-                sleep(30000);//设置轮询的时间间隔为30秒
+                sleep(10000);//设置轮询的时间间隔为30秒
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -105,22 +97,30 @@ public class Monitor {
                 b=a;//用b记录上一次请求中最新的PushEvent的id
                 try (FileWriter writefile = new FileWriter(f3)) {
                     for (int j = 1; j < jsonArray1.size() + 1; j++) {
-                        JSONObject jsonObject = (JSONObject) jsonArray1.get(jsonArray1.size()-j);
+                        JSONObject jsonObject = (JSONObject) jsonArray1.get(j-1);
                         writefile.write("事件类型:   " + jsonObject.getString("type")+"      "+"id:"+jsonObject.getString("id")+ "\n");
                         if (jsonObject.getString("type").equals("PushEvent"))
                         {
                             a=jsonObject.getString("id");//用a记录本次请求中最新的PushEvent的id
-                            continue;
+                            break;
                         }
                     }
                 }
-                System.out.println(a+"    "+b);
+                //System.out.println(a+"    "+b);
                 if (!a.equals(b))
+                {
                     System.out.println("新的PushEvent");//当本次请求中最新的PushEvent的id与上次请求中最新的PushEvent的id不相等时，证明发生了PushEvent,立刻发送邮件
+                    Smtp smtp=new Smtp();
+                    try {
+                        smtp.sendmessage(user.getMyEmailAccount(),user.getMyEmailPassword());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
             try {
-                sleep(30000);
+                sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
