@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"sort"
 )
 
@@ -26,8 +27,7 @@ func Encode() []Star { //解析所需的json信息
 	return s
 }
 func Add(S []Star, i int) []Star { //将解析后的目标仓库添加到收藏夹里
-	var s []Star
-	s = Encode()
+	s := Encode()
 	fmt.Println(s[i])
 	S = append(S, s[i])
 	fmt.Println(S)
@@ -56,10 +56,12 @@ func main() {
 	fmt.Println(s1)
 	s1 = Add(s1, 1)
 	sort.Slice(s1, func(i, j int) bool { //将收藏夹内仓库按创建时间升序排列
-		if s1[i].Created_at < s1[j].Created_at {
-			return true
-		}
-		return false
+		return s1[i].Created_at < s1[j].Created_at
 	})
 	fmt.Println(s1)
+	fileName := "starsfile"
+	fileContent, err := json.Marshal(s1)
+	if err = ioutil.WriteFile(fileName, fileContent, 0666); err != nil {
+		fmt.Println("Writefile Error =", err)
+	}
 }
