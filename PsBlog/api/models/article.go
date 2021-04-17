@@ -15,13 +15,8 @@ type Articles struct {
 }
 
 //添加文章
-func (article Articles)AddArticle(a map[string]interface{})  (err error)  {
-	res := Db.Create(&Articles{
-		TagId: a["tag_id"].(int),
-		Title: a["title"].(string),
-		Content: a["content"].(string),
-		DateTime: a["date_time"].(time.Time),
-	})
+func (article Articles)AddArticle(a *Articles)  (err error)  {
+	res := Db.Create(&a)
 	if res.Error!=nil{
 		err = res.Error
 		return
@@ -38,8 +33,8 @@ func (article *Articles)GetArticleByID(id int) bool{
 }
 
 //更新文章
-func (article Articles)UpdateArticle(id int, data interface {}) bool {
-	Db.Model(&Articles{}).Where("id = ?", id).Updates(data)
+func (article Articles)UpdateArticle(id int, data *Articles) bool {
+	Db.Model(&data).Where("id = ?", id).Updates(data)
 
 	return true
 }

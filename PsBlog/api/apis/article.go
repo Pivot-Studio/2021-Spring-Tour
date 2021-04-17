@@ -55,28 +55,29 @@ func GetArticle(c *gin.Context)  {
 
 //添加文章
 func AddArticle(c *gin.Context) {
-	tagId, _ := strconv.Atoi(c.Query("tag_id"))
-	title := c.Query("title")
-	content := c.Query("content")
+	var d model.Articles
+	_ = c.ShouldBindJSON(&d)
+	//tagId, _ := strconv.Atoi(c.Query("tag_id"))
+	//title := c.Query("title")
+	//content := c.Query("content")
 	//datetime := c.Query("time")
 	//beego/validation对数据进行合法判断
 	valid := validation.Validation{}
-	valid.Min(tagId, 1, "tag_id").Message("标签ID必须大于0")
-	valid.Required(title, "title").Message("标题不能为空")
+	valid.Min(d.TagId, 1, "tag_id").Message("标签ID必须大于0")
+	valid.Required(d.Title, "title").Message("标题不能为空")
 
-	data := make(map[string] interface{})
 	if !valid.HasErrors(){
-		data["tag_id"] = tagId
-		data["title"] = title
-		data["content"] = content
-		data["date_time"] = time.Now() //当前时间
+		//data["tag_id"] = tagId
+		//data["title"] = title
+		//data["content"] = content
+		d.DateTime= time.Now() //当前时间
 		var article model.Articles
 		//添加文章
-		_ = article.AddArticle(data)
+		_ = article.AddArticle(&d)
 		c.JSON(http.StatusOK, gin.H{
 			"code" : 1,
 			"message": "添加成功",
-			"data" : data,
+			"data" : d,
 		})
 	}else{
 		//数据不合法
@@ -92,30 +93,25 @@ func AddArticle(c *gin.Context) {
 //更新文章
 func UpdateArticle(c *gin.Context) {
 
+	var d model.Articles
+	_ = c.ShouldBindJSON(&d)
+
 	valid := validation.Validation{}
 
 	id, _ := strconv.Atoi(c.Param("id"))
-	tagId, _ := strconv.Atoi(c.Query("tag_id"))
-	title := c.Query("title")
-	content := c.Query("content")
 
-	valid.Min(tagId, 1, "tag_id").Message("标签id必须大于0")
-	valid.Required(title, "title").Message("标题不能为空")
+	valid.Min(d.TagId, 1, "tag_id").Message("标签id必须大于0")
+	valid.Required(d.Title, "title").Message("标题不能为空")
 	//内容可以为空
-	data := make(map[string]interface{})
 	if !valid.HasErrors() {
-
-		data["tag_id"] = tagId
-		data["title"] = title
-		data["content"] = content
-		data["date_time"] = time.Now() //当前时间
+		d.DateTime = time.Now() //当前时间
 		var article model.Articles
 		//添加文章
-		article.UpdateArticle(id, data)
+		article.UpdateArticle(id, &d)
 		c.JSON(http.StatusOK, gin.H{
 			"code":    1,
 			"message": "更新成功",
-			"data":    data,
+			"data":    d,
 		})
 	} else {
 		//数据不合法

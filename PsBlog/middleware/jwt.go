@@ -21,8 +21,8 @@ type MyClaims struct {
 
 //生成token
 func SetToken(username string, password string)(string, bool)  {
-	//过期时间
-	expireTime := time.Now().Add(10*time.Hour)
+	//过期时间设置为1个小时
+	expireTime := time.Now().Add(1*time.Hour)
 	SetClaims := MyClaims{
 		Username: username,
 		//Password: password,
@@ -103,6 +103,7 @@ func JwtToken() gin.HandlerFunc {
 			return
 		}
 		c.Set("username", key.Username)
+		//交给下一个路由继续处理
 		c.Next()
 	}
 }

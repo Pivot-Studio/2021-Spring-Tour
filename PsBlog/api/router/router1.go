@@ -46,7 +46,7 @@ func InitRouter()*gin.Engine{
 
 		//评论模块
 		router2.GET("comment/list", GetCommentList)
-		router2.GET("comment/get/:id")
+		router2.GET("comment/get/:id", GetComment)
 	}
 
 	return r
