@@ -3,6 +3,7 @@ package part3.monitor;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -18,11 +19,11 @@ import java.io.*;
 
 import static java.lang.Thread.sleep;
 
-public class Monitor {
+public class Monitor extends  Thread{
 
-    public static void main(String[] args) throws IOException {
+    public  void run() {
         String a=null;//用来记录最新的PushEvent的id
-        String b=null;
+        String b;
         JSONUtil jsonUtil=new JSONUtil();
         User user=jsonUtil.get_key();
         String access_token = user.getAccess_token();
@@ -36,8 +37,6 @@ public class Monitor {
                 .build();
              CloseableHttpResponse response = httpClient.execute(request)) {
 
-            // 401 if wrong user/password
-            System.out.println(response.getStatusLine().getStatusCode());
             HttpEntity entity = response.getEntity();
             String result = null;
             if (entity != null) {
@@ -68,9 +67,13 @@ public class Monitor {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         //开始不断地轮询
-        for(int i=0;i<50;i++) {
+        while(true) {
             HttpGet request1 = new HttpGet("https://api.github.com/users/machuanhu/events?access_token=" + access_token);
 
             CredentialsProvider provider1 = new BasicCredentialsProvider();
@@ -80,8 +83,7 @@ public class Monitor {
                     .build();
                  CloseableHttpResponse response1 = httpClient1.execute(request1)) {
 
-                // 401 if wrong user/password
-                System.out.println(response1.getStatusLine().getStatusCode());
+
                 HttpEntity entity1 = response1.getEntity();
                 String result1 = null;
                 if (entity1 != null) {
@@ -118,6 +120,10 @@ public class Monitor {
                     }
                 }
 
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             try {
                 sleep(10000);

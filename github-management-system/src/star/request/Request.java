@@ -17,7 +17,7 @@ import privacy.User;
 import java.io.*;
 
 public class Request {
-    public static void main(String[] args) throws IOException {
+    public  void request() throws IOException {
 
         JSONUtil jsonUtil=new JSONUtil();
         User user=jsonUtil.get_key();

@@ -11,8 +11,6 @@ public class Smtp {
     //发件人的 邮箱 和 密码
     // PS: 某些邮箱服务器为了增加邮箱本身密码的安全性，给 SMTP 客户端设置了独立密码（有的邮箱称为“授权码”）,
     //     对于开启了独立密码的邮箱, 这里的邮箱密码必需使用这个独立密码（授权码）。
-    //public static String myEmailAccount = "2556714320@qq.com";
-    //public static String myEmailPassword = "ezbfyacwibgidhfi";
 
     // 发件人邮箱的 SMTP 服务器地址, 必须准确, 不同邮件服务器地址不同, 一般(只是一般, 绝非绝对)格式为: smtp.xxx.com
     // QQ邮箱的 SMTP 服务器地址为: smtp.QQ.com
