@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.zhang.mapper.UserMapper">
+    <insert id="register" parameterType="pers.zhang.pojo.User" useGeneratedKeys="true" keyProperty="uid"  keyColumn="uid">
+        insert into user(name,pwd) values (#{name},#{pwd})
+    </insert>
+    <select id="login" resultType="pers.zhang.pojo.User">
+        select * from user where name = #{name} and pwd = #{pwd}
+    </select>
+    <update id="updatePwd" parameterType="pers.zhang.pojo.User">
+        update user set pwd = #{pwd} where uid = #{uid}
+    </update>
+</mapper>

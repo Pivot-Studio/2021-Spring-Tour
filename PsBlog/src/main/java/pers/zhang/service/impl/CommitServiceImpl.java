@@ -19,18 +19,31 @@ public class CommitServiceImpl implements CommitService {
 
     //作用：发表一条评论
     //参数：评论者id号=committerId，评论内容=content，所评论博客id号=id
-    //返回值：成功为1，因为评论内容为空或目标博客不存在失败返回0
+    //返回值：所发表Commit实例，可能为null
     @Override
-    public int addCommit(int committerId, String ccontent, int target) {
+    public Commit addCommit(int committerId, String ccontent, int target){
         Blog blog = new Blog();
         blog.setId(target);
-        if(ccontent==null||blogMapper.getBlog(blog)==null) return 0;
+        //内容为空字符串或所评论博客不存在，返回null
+        if(ccontent==""||blogMapper.getBlog(blog)==null) return null;
         Commit commit = new Commit();
         commit.setCommitterId(committerId);
         commit.setCcontent(ccontent);
         commit.setTarget(target);
-        return commitMapper.addCommit(commit);
+        //将刚发表的评论的自增主键赋给实例的相应字段cid
+        commitMapper.addCommit(commit);
+        return commit;
     }
+//    public int addCommit(int committerId, String ccontent, int target) {
+//        Blog blog = new Blog();
+//        blog.setId(target);
+//        if(ccontent==null||blogMapper.getBlog(blog)==null) return 0;
+//        Commit commit = new Commit();
+//        commit.setCommitterId(committerId);
+//        commit.setCcontent(ccontent);
+//        commit.setTarget(target);
+//        return commitMapper.addCommit(commit);
+//    }
 
     //作用：删除一条评论
     //参数：评论id号=cid

@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="pers.zhang.mapper.CommitMapper">
-    <insert id="addCommit" parameterType="pers.zhang.pojo.Commit" keyProperty="cid">
+    <insert id="addCommit" parameterType="pers.zhang.pojo.Commit" useGeneratedKeys="true" keyProperty="cid"  keyColumn="cid">
         insert into commit (uid,ccontent,id) values (#{committerId},#{ccontent},#{target});
     </insert>
     <delete id="deleteCommit" parameterType="pers.zhang.pojo.Commit">
