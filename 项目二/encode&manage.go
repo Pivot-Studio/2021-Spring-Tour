@@ -64,4 +64,9 @@ func main() {
 	if err = ioutil.WriteFile(fileName, fileContent, 0666); err != nil {
 		fmt.Println("Writefile Error =", err)
 	}
+	InitDB()
+	/*for i := 0; i < len(s1); i++ {
+		InsertUser(s1[i])
+	}*/
+	//defer DB.Close()
 }

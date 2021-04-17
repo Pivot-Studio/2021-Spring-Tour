@@ -66,10 +66,10 @@ func Long_poll2() string {
 
 func digui() {
 	str1 := Long_poll1()
-	time.Sleep(5 * time.Second)
+	time.Sleep(500 * time.Second)
 	str2 := Long_poll2()
 	if str1 == str2 {
-		time.Sleep(5 * time.Second)
+		time.Sleep(500 * time.Second)
 		digui()
 	}
 	if str1 != str2 {
