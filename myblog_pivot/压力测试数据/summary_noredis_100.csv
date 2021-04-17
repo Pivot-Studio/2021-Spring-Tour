@@ -1,0 +1,3 @@
+Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,Received KB/sec,Sent KB/sec,Avg. Bytes
+HTTP请求,100,374,260,399,18.87,0.000%,232.55814,559.14,41.56,2462.0
+TOTAL,100,374,260,399,18.87,0.000%,232.55814,559.14,41.56,2462.0
