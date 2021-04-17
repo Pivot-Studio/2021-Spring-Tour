@@ -13,7 +13,6 @@ type Post struct {
 	Content string `orm:"size(4000);description(帖子内容)"`
 	AuthorId int `orm:"description(帖子作者)"`
 	AuthorName string
-	NumPosts int //用户有几篇文章
 	CreateTime time.Time `orm:"auto_now_add;type(datetime);description(创建时间)"`
 }
 

@@ -100,7 +100,8 @@ func (r *UserController) Register() {
 	}
 
 	if password != repassword {
-		r.Data["json"] = map[string]interface{}{"code": 0, "msg": "两次输入密码不一致"}
+		resp["code"] = 0
+		resp["msg"] = "两次输入密码不一致"
 		return
 	}
 	logs.Info("开始注册")
@@ -112,16 +113,16 @@ func (r *UserController) Register() {
 	exist2 := o.QueryTable(new(models.User)).Filter("Email", email).Exist()
 	conut, _ := o.QueryTable(new(models.User)).Filter("Username", username).Count()
 	logs.Info("名字人数： ", conut)
-	if exist1 {  //用户名是否已经存在
+	if exist2 {  //邮箱是否已经存在
 		user := models.User{}
 		o.QueryTable(new(models.User)).Filter("Username", username).One(&user)
 		if user.Status == 1 {
 			resp["code"] = 0
-			resp["msg"] = "用户名已存在"
+			resp["msg"] = "邮箱已被使用"
 			return
 		} else {
 			resp["code"] = 0
-			resp["msg"] = "邮箱已经注册，已重发验证码"
+			resp["msg"] = "邮箱已经注册未被激活，已重发验证码"
 			rand.Seed(time.Now().UnixNano())
 			code := rand.Intn(8999) + 1000
 			body := "验证码是：" + strconv.Itoa(code)
@@ -141,9 +142,9 @@ func (r *UserController) Register() {
 				return
 			}
 		}
-	} else if exist2 { //邮箱是否已经被注册
+	} else if exist1 { //用户名是否已经被注册
 		resp["code"] = 0
-		resp["msg"] = "邮箱已被注册"
+		resp["msg"] = "用户名已被注册"
 		return
 	} else {
 		newuser := models.User{
@@ -172,7 +173,7 @@ func (r *UserController) Register() {
 			resp["code"] = 1
 			resp["msg"] = "发送邮件成功"
 			models.SetRedisKeyValue(email, strconv.Itoa(code))
-			models.SetExpireTime(email, 2*int64(time.Minute)) //过期时间 验证码
+			models.SetExpireTime(email, 600) //过期时间 验证码
 			return
 		}
 	}
@@ -184,15 +185,18 @@ func (r *UserController) EditPassword() {
 	repassword := r.GetString("repassword")
 	email := r.GetString("email")
 	logs.Info("用户名是 ", username, "密码是 ", password, "邮箱时", email)
+	resp := make(map[string]interface{})
+	r.Data["json"] = resp
+	defer r.ServeJSON()
 
 	if username == "" || password == "" || email == "" {
-		r.Data["json"] = map[string]interface{}{"code": 0, "msg": "用户名或密码或邮箱不能为空"}
-		r.ServeJSON()
+		resp["code"] = 0
+		resp["msg"] = "用户名、密码、邮箱不能为空"
 		return
 	}
 	if password != repassword {
-		r.Data["json"] = map[string]interface{}{"code": 0, "msg": "两次输入密码不一致"}
-		r.ServeJSON()
+		resp["code"] = 0
+		resp["msg"] = "两次输入密码不一致"
 		return
 	}
 
@@ -222,10 +226,16 @@ func (r *UserController) EditPassword() {
 			models.SetRedisKeyValue(email, string(rnd))
 			models.SetExpireTime(email, 600) //过期时间 验证码
 		}
+	} else {
+		resp["code"] = 0
+		resp["msg"] = "用户不存在"
 	}
 	return
 }
 
+
+//验证码验证机制
+//综合修改密码和状态激活
 func (r *UserController) VerifyCode() {
 	email := r.GetString("email")
 	code, _ := r.GetInt("code") //用户给的
@@ -235,18 +245,18 @@ func (r *UserController) VerifyCode() {
 	trueCode, _ := redis.Int(models.GetRedisValue(email))
 	logs.Info("验证码是", trueCode)
 	logs.Info("我输入的验证码是", code)
+	defer r.ServeJSON()
 	if code != trueCode {
 		logs.Info("验证码失败")
 		r.Data["json"] = map[string]interface{}{"code": "0", "msg": "验证码错误"}
-		r.ServeJSON()
 		return
 	} else {
 		models.DelRedisKey(email)
 	}
 	o := orm.NewOrm()
 	//有需要查询的结构体对象
-	user := &models.User{Email: email, Username: username}
-	err := o.Read(user, "Username")
+	user := models.User{Email: email, Username: username}
+	err := o.Read(&user, "Username")
 	logs.Info(user)
 	if user.Status == 0 {
 		user.Status = 1
@@ -269,7 +279,5 @@ func (r *UserController) VerifyCode() {
 		logs.Info("修改密码")
 		r.Data["json"] = map[string]interface{}{"code": "0", "msg": "修改成功"}
 	}
-
-	r.ServeJSON()
-
+ return
 }

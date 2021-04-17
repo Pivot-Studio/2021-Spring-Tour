@@ -46,7 +46,7 @@ func (o *PostController) Post() {
 }
 
 
-//整体分页返回 返回所有用户的帖子
+//整体分页返回 返回所有的帖子
 func (o *PostController) GetAllPages() {
 	logs.Info("开始获取所有帖子 begin to get allposts ")
 	resp := make(map[string]interface{})

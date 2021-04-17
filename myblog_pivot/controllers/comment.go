@@ -45,7 +45,7 @@ func (o *CommentController) Post() {
 	return
 }
 
-func (o *CommentController) Get() { //整体分页返回
+func (o *CommentController) Get() {  //整体分页返回
 	resp := make(map[string]interface{})
 	o.Data["json"] = resp
 	defer o.ServeJSON()
