@@ -86,7 +86,7 @@ func (o *PostController) GetAllPages() {
 		return
 	}
 
-	if _, err = redisConn.Do("EXPIRE", target, 600); err != nil {
+	if _, err = redisConn.Do("EXPIRE", target, 200); err != nil {
 		logs.Info("set key-value error ", err)
 		return
 	}
@@ -136,7 +136,7 @@ func (o *PostController) GetAllUserPages() {
 				return
 			}
 
-			if _, err = redisConn.Do("EXPIRE", target, 600); err != nil {
+			if _, err = redisConn.Do("EXPIRE", target, 200); err != nil {
 				logs.Info("set key-value error ", err)
 				return
 			}

@@ -35,10 +35,9 @@ func (u *UserController) Login() {
 		return
 	}
 	logs.Info("用户名是 ", username, "密码是 ", password)
-	md5_pwd := utils.GetMd5(password)
 	logs.Info("正在登录")
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(models.User)).Filter("username", username).Filter("password", md5_pwd)
+	qs := o.QueryTable(new(models.User)).Filter("username", username)
 	exist := qs.Exist()
 	user := models.User{}
 	if exist {
@@ -63,7 +62,8 @@ func (u *UserController) Login() {
 				logs.Info("Cookie 设置成功")
 				resp["code"] = 1
 				resp["msg"] = "登陆成功"
-				resp["user"] = user
+				resp["userid"] = user.Id
+				resp["username"] = user.Username
 			} else {
 				resp["code"] = 0
 				resp["msg"] = "密码错误"
@@ -216,14 +216,15 @@ func (r *UserController) EditPassword() {
 		} else {
 			rnd := rand.Intn(8999) + 1000
 			subject := "博客密码修改的验证码"
-			body := "验证码是" + string(rnd)
+			body := "验证码是" + strconv.Itoa(rnd)
 			err := utils.SendMail(email, subject, body)
 			if err != nil {
 				logs.Info(err)
 				logs.Info("邮件发送失败")
 				return
 			}
-			models.SetRedisKeyValue(email, string(rnd))
+			r.Data["json"] = map[string]interface{}{"code": 1, "msg": "已经发送验证码"}
+			models.SetRedisKeyValue(email, strconv.Itoa(rnd))
 			models.SetExpireTime(email, 600) //过期时间 验证码
 		}
 	} else {
@@ -261,7 +262,7 @@ func (r *UserController) VerifyCode() {
 	if user.Status == 0 {
 		user.Status = 1
 		if err == nil {
-			count, err := o.Update(user, "status") //省略的是一个int类型的返回值，代表的是更新了多少条数据
+			count, err := o.Update(&user, "status") //省略的是一个int类型的返回值，代表的是更新了多少条数据
 			logs.Info(user)
 			if err != nil {
 				logs.Info(err)
@@ -275,7 +276,7 @@ func (r *UserController) VerifyCode() {
 		}
 	} else {
 		user.Password = utils.GetMd5(password)
-		o.Update(user, "Password")
+		o.Update(&user, "Password")
 		logs.Info("修改密码")
 		r.Data["json"] = map[string]interface{}{"code": "0", "msg": "修改成功"}
 	}

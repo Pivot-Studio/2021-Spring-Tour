@@ -13,7 +13,6 @@ import (
 
 func main() {
 	beego.Run()
-
 }
 
 func init() {
@@ -55,6 +54,4 @@ func init() {
 			o.Insert(&post)
 		}
 	}
-
-
 }
