@@ -1,9 +1,9 @@
-package part4.favorite.menu;
+package star.favorite.menu;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import part4.favorite.operation.OperationOfFavorite;
-import part4.favorite.operation.Sort;
+import star.favorite.operation.OperationOfFavorite;
+import star.favorite.operation.Sort;
 
 import java.util.Scanner;
 

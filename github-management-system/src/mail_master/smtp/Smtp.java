@@ -1,4 +1,4 @@
-package part3.smtp;
+package mail_master.smtp;
 
 import javax.mail.Session;
 import javax.mail.Transport;

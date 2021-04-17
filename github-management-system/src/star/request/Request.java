@@ -1,4 +1,4 @@
-package part4.request;
+package star.request;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -10,7 +10,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import part4.favorite.menu.Menu;
+import star.favorite.menu.Menu;
 import privacy.JSONUtil;
 import privacy.User;
 
@@ -38,15 +38,18 @@ public class Request {
             if (entity != null) {
                 //将json数据转换成字符串并输出到starred.txt
                 result = EntityUtils.toString(entity);
-                File f=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\part4","starred.json");
-                FileWriter writefile=new FileWriter(f);
-                writefile.write(result);
-                System.out.println("成功将所有json数据写入starred.txt");
+                File f=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\star","starred.json");
+                try(FileWriter writefile=new FileWriter(f))
+                {
+                    writefile.write(result);
+                }
+
+                System.out.println("成功将所有json数据写入starred.json");
             }
             //解析json数组，筛选出想要的信息，并输出到repos.txt
             JSONArray jsonArray;
             jsonArray = (JSONArray) JSONArray.parse(result);
-            File f2=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\part4","repos.json");
+            File f2=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\star","repos.json");
             JSONArray jsonArray7=new JSONArray();
             try (FileWriter writefile = new FileWriter(f2)) {
                 for (int j = 1; j < jsonArray.size()+1; j++) {

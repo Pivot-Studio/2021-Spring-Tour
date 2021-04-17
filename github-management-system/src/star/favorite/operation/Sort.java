@@ -1,6 +1,10 @@
-package part4.favorite.operation;
+package star.favorite.operation;
 
 import com.alibaba.fastjson.JSONArray;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Sort {
     public void sort(JSONArray jsonArray,String key){
@@ -11,9 +15,20 @@ public class Sort {
             n[i]=i;
         }
         quicksort(jsonArray,n,jsonArray.size(), key);
+        File file=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\star", key + ".txt");
+        try (FileWriter writefile = new FileWriter(file)) {
+            for(int j=0;j<jsonArray.size();j++)
+            {
+                writefile.write(key+":    "+jsonArray.getJSONObject(n[j]).getString(key)+"    "+jsonArray.getJSONObject(n[j]).toJSONString()+"\n");
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         for(int j=0;j<jsonArray.size();j++)
         {
             System.out.println(key+":    "+jsonArray.getJSONObject(n[j]).getString(key)+"    "+jsonArray.getJSONObject(n[j]).toJSONString());
+
         }
     }
     public void quicksort(JSONArray jsonArray,int n[],int m,String key)

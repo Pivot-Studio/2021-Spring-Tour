@@ -1,4 +1,4 @@
-package part3.monitor;
+package mail_master.monitor;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -13,7 +13,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import privacy.JSONUtil;
 import privacy.User;
-import part3.smtp.Smtp;
+import mail_master.smtp.Smtp;
 
 import java.io.*;
 
@@ -42,13 +42,16 @@ public class Monitor extends  Thread{
             if (entity != null) {
                 // return it as a String
                 result = EntityUtils.toString(entity);
-                File f=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\part3","events.txt");//将获取的所有events信息存入events.txt
-                FileWriter writefile = new FileWriter(f);
-                writefile.write(result);
+                File f=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\mail_master","events.txt");//将获取的所有events信息存入events.txt
+                try(FileWriter writefile = new FileWriter(f))
+                {
+                    writefile.write(result);
+                }
+
             }
             JSONArray jsonArray;
             jsonArray = (JSONArray) JSONArray.parse(result);
-            File f2=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\part3","PushEvents.txt");
+            File f2=new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\mail_master","PushEvents.txt");
             try (FileWriter writefile = new FileWriter(f2)) {
                 //检索events列表
                 for (int j = 1; j < jsonArray.size() + 1; j++) {
@@ -89,13 +92,13 @@ public class Monitor extends  Thread{
                 if (entity1 != null) {
                     // return it as a String
                     result1 = EntityUtils.toString(entity1);
-                    File f = new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\part3", "events.txt");
+                    File f = new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\mail_master", "events.txt");
                     FileWriter writefile = new FileWriter(f);
                     writefile.write(result1);
                 }
                 JSONArray jsonArray1;
                 jsonArray1 = (JSONArray) JSONArray.parse(result1);
-                File f3 = new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\part3", "PushEvents.txt");
+                File f3 = new File("C:\\Program Files\\Git\\2021-Spring-Tour\\github-management-system\\src\\mail_master", "PushEvents.txt");
                 b=a;//用b记录上一次请求中最新的PushEvent的id
                 try (FileWriter writefile = new FileWriter(f3)) {
                     for (int j = 1; j < jsonArray1.size() + 1; j++) {
