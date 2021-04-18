@@ -57,6 +57,6 @@ public class BlogServiceImpl implements BlogService {
         blog.setContent(content);
         //将修改的记录的主键值赋给相应字段id
         blogMapper.updateBlog(blog);
-        return blog;
+        return blogMapper.getBlog(blog);
     }
 }

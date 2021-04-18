@@ -45,6 +45,7 @@ public class CommitController {
     //参数：评论id号=cid
     //返回值：commit类对象转换成的Json
     @GetMapping("/{cid}")
+    @ResponseBody
     public Commit getCommitByCid(@PathVariable String cid){
         return commitService.getCommitByCid(Integer.parseInt(cid));
     }
@@ -53,6 +54,7 @@ public class CommitController {
     //参数：博客id号=id
     //返回值：commit类对象集合转换成的Json
     @GetMapping
+    @ResponseBody
     public List<Commit> getCommitOfBlog(String id){
         return commitService.getCommitOfBlog(Integer.parseInt(id));
     }

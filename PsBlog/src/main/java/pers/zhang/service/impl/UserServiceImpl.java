@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setName(name);
         user.setPwd(pwd);
-        user.setUid(userMapper.register(user));
+        userMapper.register(user);
         return user;
     }
 
